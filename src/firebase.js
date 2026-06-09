@@ -3,11 +3,12 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-
+//get api key from .env file
+import { firebase_api_key } from "./fire_key.env";
 //the web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
-  apiKey: "AIzaSyDLgfkKYhZb91fFl5m1CqbkYvdyj7lvoMY",
+  apiKey: firebase_api_key,
   authDomain: "warframe-world-data.firebaseapp.com",
   projectId: "warframe-world-data",
   storageBucket: "warframe-world-data.firebasestorage.app",
