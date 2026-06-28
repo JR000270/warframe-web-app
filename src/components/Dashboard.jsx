@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
 // --- NEW COUNTDOWN COMPONENT ---
-// This tiny component handles its own 1-second ticking state
 const Countdown = ({ expiry }) => {
   const [timeLeft, setTimeLeft] = useState('');
 
@@ -15,7 +15,6 @@ const Countdown = ({ expiry }) => {
         return "Expired";
       }
       
-      // Math to convert milliseconds into hours, minutes, and seconds
       const h = Math.floor(difference / (1000 * 60 * 60));
       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const s = Math.floor((difference % (1000 * 60)) / 1000);
@@ -24,17 +23,14 @@ const Countdown = ({ expiry }) => {
       return `${m}m ${s}s`;
     };
 
-    // Set it immediately so it doesn't blink blank on load
     setTimeLeft(calculateTime());
 
-    // Start the 1-second interval
     const timer = setInterval(() => {
       const newTime = calculateTime();
       setTimeLeft(newTime);
       if (newTime === "Expired") clearInterval(timer);
     }, 1000);
 
-    // Clean up the interval when the component is removed from the screen
     return () => clearInterval(timer);
   }, [expiry]);
 
@@ -50,6 +46,7 @@ export default function Dashboard() {
   const [alerts, setAlerts] = useState([]);
   const [fissures, setFissures] = useState([]);
   const [arbitration, setArbitration] = useState(null);
+  const [voidTrader, setVoidTrader] = useState(null); // <-- Added Baro State
   const [loading, setLoading] = useState(true);
 
   // 2. UI TOGGLE STATE
@@ -66,6 +63,7 @@ export default function Dashboard() {
         setAlerts(data.alerts || []); 
         setFissures(data.fissures || []); 
         setArbitration(data.arbitration || null);
+        setVoidTrader(data.voidTrader || null); // <-- Syncing Baro Data
       }
       setLoading(false);
     });
@@ -79,6 +77,9 @@ export default function Dashboard() {
     !arbitration.expired &&
     arbitration.node !== "SolNode000";
 
+  // Calculate if Baro is active based on his activation timestamp
+  const isBaroActive = voidTrader && new Date(voidTrader.activation).getTime() <= Date.now();
+  
   // --- SORTING LOGIC ---
   const tierWeights = {
     'Lith': 1, 'Meso': 2, 'Neo': 3, 'Axi': 4, 'Omnia': 5, 'Requiem': 6
@@ -142,15 +143,12 @@ export default function Dashboard() {
               <div className="flex justify-between items-start mb-1 gap-2">
                 <div className="flex flex-col">
                   <h3 className="font-semibold text-white leading-tight">{fissure.node}</h3>
-                  {/* Fissure Timer Added Here */}
                   <Countdown expiry={fissure.expiry} />
                 </div>
                 {getTierBadge(fissure.tier)}
               </div>
               <p className="text-xs text-slate-400 mt-1">{fissure.missionType} - {fissure.enemy}</p>
             </div>
-            
-            
           </div>
         ))}
       </div>
@@ -163,6 +161,53 @@ export default function Dashboard() {
       {/* --- ALERTS SECTION --- */}
       <section>
         <h2 className="text-2xl font-bold text-red-500 mb-6">Active Alerts</h2>
+
+        {/* --- BARO KI'TEER INTERACTIVE BANNER LOCATION --- */}
+        {voidTrader && (
+          isBaroActive ? (
+            <Link 
+              to="/baro" 
+              className="block mb-6 p-5 rounded-lg border bg-teal-900/20 border-teal-700/40 hover:border-teal-500/80 shadow-[0_0_15px_rgba(20,184,166,0.1)] hover:shadow-[0_0_20px_rgba(20,184,166,0.25)] transition-all cursor-pointer group"
+            >
+              <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+                <div>
+                  <h3 className="font-bold text-teal-400 text-xl flex items-center gap-2 mb-1 group-hover:text-teal-300">
+                    💎 Baro Ki'Teer Arrived!
+                  </h3>
+                  <p className="text-slate-300">
+                    Currently at <span className="font-bold text-white group-hover:underline">{voidTrader.location}</span>. Click to view current inventory ledger.
+                  </p>
+                </div>
+                
+                <div className="text-left md:text-right bg-slate-900/60 p-3 rounded border border-slate-700/50 w-full md:w-auto">
+                  <p className="text-xs text-slate-400 mb-1 uppercase tracking-wider font-semibold">
+                    Departs in:
+                  </p>
+                  <div className="text-lg font-bold text-white">
+                    <Countdown expiry={voidTrader.expiry} />
+                  </div>
+                </div>
+              </div>
+            </Link>
+          ) : (
+            <div className="mb-6 p-5 rounded-lg border bg-slate-800 border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+              <div>
+                <h3 className="font-bold text-slate-400 text-xl flex items-center gap-2 mb-1">
+                  🌌 Baro Ki'Teer
+                </h3>
+                <p className="text-slate-400">Traveling through the Void...</p>
+              </div>
+              <div className="text-left md:text-right bg-slate-900/50 p-3 rounded border border-slate-700/50 w-full md:w-auto">
+                <p className="text-xs text-slate-400 mb-1 uppercase tracking-wider font-semibold">Arrives in:</p>
+                <div className="text-lg text-white">
+                  <Countdown expiry={voidTrader.activation} />
+                </div>
+              </div>
+            </div>
+          )
+        )}
+
+        {/* --- CARDS LAYOUT DOWN BELOW --- */}
         {loading ? (
           <p className="text-slate-400">Loading...</p>
         ) : alerts.length === 0 && !hasArbitration ? (
@@ -176,7 +221,6 @@ export default function Dashboard() {
                 <div className="flex justify-between items-start mb-1 gap-2">
                   <div className="flex flex-col">
                     <h3 className="font-semibold text-white leading-tight">{arbitration.node}</h3>
-                    {/* Arbitration Timer Added Here */}
                     <Countdown expiry={arbitration.expiry} />
                   </div>
                   <span className="text-[10px] uppercase font-bold px-2 py-1 rounded border tracking-wider bg-slate-300/20 text-slate-300 border-slate-400/50">
@@ -197,7 +241,6 @@ export default function Dashboard() {
                   <div className="flex justify-between items-start mb-1 gap-2">
                     <div className="flex flex-col">
                       <h3 className="font-semibold text-white leading-tight">{alert.mission.node}</h3>
-                      {/* Alert Timer Added Here */}
                       <Countdown expiry={alert.expiry} />
                     </div>
                   </div>
@@ -218,7 +261,7 @@ export default function Dashboard() {
         
         {loading ? (
           <p className="text-slate-400">Loading...</p>
-        ) : (
+          ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
             
             {/* NORMAL COLUMN */}
