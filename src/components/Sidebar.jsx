@@ -9,7 +9,7 @@ export default function Sidebar() {
 
   const navItems = [
     { name: 'Alerts & Fissures', path: '/', icon: '⚠️' },
-    { name: 'World State', path: '/world', icon: '🌍' },
+    { name: 'World Overview', path: '/world', icon: '🌍' },
     { name: "Baro Ki'Teer", path: '/baro', icon: '💎' }
   ];
 
