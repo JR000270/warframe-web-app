@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
@@ -128,10 +129,18 @@ export default function World() {
         <h2 className="text-2xl font-bold text-green-400 mb-6">Open World Cycles</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <CycleCard name="Cetus" data={cycles.cetus} />
-          <CycleCard name="Orb Vallis" data={cycles.vallis} />
-          <CycleCard name="Cambion Drift" data={cycles.cambion} />
-          <CycleCard name="Duviri" data={cycles.duviri} />
+          <Link to="/cetus">
+           <CycleCard name="Cetus" data={cycles.cetus} />
+          </Link>
+          <Link to="/vallis">
+            <CycleCard name="Orb Vallis" data={cycles.vallis} />
+          </Link>
+          <Link to="/cambion">
+            <CycleCard name="Cambion Drift" data={cycles.cambion} />
+          </Link>
+          <Link to="/duviri">
+            <CycleCard name="Duviri" data={cycles.duviri} />
+          </Link>
         </div>
       </section>
 

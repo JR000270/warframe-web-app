@@ -10,7 +10,13 @@ export default function Sidebar() {
   const navItems = [
     { name: 'Alerts & Fissures', path: '/', icon: '⚠️' },
     { name: 'World Overview', path: '/world', icon: '🌍' },
-    { name: "Baro Ki'Teer", path: '/baro', icon: '💎' }
+    { name: "Baro Ki'Teer", path: '/baro', icon: '💎' },
+    {name: 'Cetus', path: '/cetus', icon: '🌾'},
+    {name: 'Vallis', path: '/vallis', icon: '❄️'},
+    {name: 'Deimos', path: '/cambion', icon: '🦠'},
+    {name: 'Duviri', path: '/duviri', icon: '🌀'},
+    {name: 'Hollvania', path: '/hollvania', icon: '🏰'},
+    {name: 'Zariman', path: '/zariman', icon: '🛸'},
   ];
 
   return (
