@@ -8,8 +8,6 @@ import Cetus from './components/Cetus';
 import Vallis from './components/Vallis';
 import Cambion from './components/Cambion';
 import Duviri from './components/Duviri';
-import Hollvania from './components/Hollvania';
-import Zariman from './components/Zariman';
 import Sidebar from './components/Sidebar';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
@@ -66,10 +64,6 @@ function App() {
               <Route path="/vallis" element={<Vallis />} />
               <Route path="/cambion" element={<Cambion />} />
               <Route path="/duviri" element={<Duviri />} />
-
-              {/* Faction Worlds*/}
-              <Route path="/hollvania" element={<Hollvania />} />
-              <Route path="/zariman" element={<Zariman />} />
             </Routes>
             
           </div>

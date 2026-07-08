@@ -37,10 +37,11 @@ const Countdown = ({ expiry }) => {
 };
 
 export default function Duviri() {
-  const [cetusCycle, setCetusCycle] = useState(null);
-  const [bounties, setBounties] = useState(null);
-  const [loading, setLoading] = useState(true);
+  const [duviriCycle, setduviriCycle] = useState(null);
+  const [warframes, setWarframes] = useState(null);
+  const [incarnons, setIncarnons] = useState(null);
 
+  const [loading, setLoading] = useState(true);
   useEffect(() => {
     const docRef = doc(db, 'worldState', 'latest');
     
@@ -48,20 +49,25 @@ export default function Duviri() {
       if (docSnap.exists()) {
         const data = docSnap.data();
         
-        // 1. Set the Cycle Data
-        setCetusCycle(data.cetusCycle);
-
-        // 2. Extract Konzu's Bounties
-        const allSyndicates = data.syndicateMissions || [];
-        const ostronData = allSyndicates.find(
-          (syn) => syn.syndicateKey === 'Ostrons'
-        );
+        // 1. Store the raw data in a local, immediate variable first
+        const currentCycleData = data.duviriCycle; 
         
-        // Ensure jobs exist before setting them
-        if (ostronData && ostronData.jobs) {
-          setBounties(ostronData.jobs);
-        } else {
-          setBounties([]);
+        // 2. Set the React state for your banner
+        setduviriCycle(currentCycleData); 
+        
+        // 3. Evaluate the LOCAL variable (currentCycleData), NOT the React state variable
+        if (currentCycleData && Array.isArray(currentCycleData.choices)) {
+          // Normal Circuit choices (Index 0)
+          const normalCategory = currentCycleData.choices[0];
+          if (normalCategory && normalCategory.choices) {
+            setWarframes(normalCategory.choices);
+          }
+
+          // Steel Path Circuit choices (Index 1)   
+          const hardCategory = currentCycleData.choices[1];
+          if (hardCategory && hardCategory.choices) {
+            setIncarnons(hardCategory.choices);
+          }
         }
       }
       setLoading(false);
@@ -69,95 +75,141 @@ export default function Duviri() {
 
     return () => unsubscribe();
   }, []);
+  
+
+ const getSpiralConfig = (state) => {
+    const mood = state?.toLowerCase() || '';
+    
+    switch (mood) {
+      case 'joy':
+        return {
+          bannerClass: 'bg-pink-950/20 border-pink-500/30',
+          glowClass: 'bg-pink-500',
+          textClass: 'text-pink-400',
+          label: ':D Joy'
+        };
+      case 'anger':
+        return {
+          bannerClass: 'bg-red-950/20 border-red-500/30',
+          glowClass: 'bg-red-500',
+          textClass: 'text-red-400',
+          label: '>:O Anger'
+        };
+      case 'envy':
+        return {
+          bannerClass: 'bg-emerald-950/20 border-emerald-600/30', // Murky Green
+          glowClass: 'bg-emerald-600',
+          textClass: 'text-emerald-400',
+          label: '>:/ Envy'
+        };
+      case 'sorrow':
+        return {
+          bannerClass: 'bg-slate-900/40 border-slate-500/30',     // Grey
+          glowClass: 'bg-slate-500',
+          textClass: 'text-slate-400',
+          label: ' :( Sorrow'
+        };
+      case 'fear':
+        return {
+          bannerClass: 'bg-yellow-950/20 border-yellow-500/30',
+          glowClass: 'bg-yellow-500',
+          textClass: 'text-yellow-400',
+          label: ':O Fear'
+        };
+      default:
+        return {
+          bannerClass: 'bg-slate-900/20 border-slate-800',
+          glowClass: 'bg-slate-600',
+          textClass: 'text-slate-400',
+          label: '🌀 Unknown Spiral'
+        };
+    }
+  };
 
   if (loading) {
-    return <div className="p-8 text-slate-400">Loading Cetus data...</div>;
+    return <div className="p-8 text-slate-400">Loading Duviri data...</div>;
   }
 
-  const isDay = cetusCycle?.state === 'day';
+  const currentSpiral = getSpiralConfig(duviriCycle?.state);
 
   return (
     <div className="w-full max-w-7xl space-y-6">
       
-      {/* Dynamic Header / Cycle Banner */}
-      <div className={`p-6 rounded-xl border relative overflow-hidden transition-colors duration-500 ${
-        isDay 
-          ? 'bg-amber-900/20 border-amber-500/30' 
-          : 'bg-blue-900/20 border-blue-500/30'
-      }`}>
-        {/* Background glow effects based on time of day */}
-        <div className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none ${
-          isDay ? 'bg-amber-400' : 'bg-blue-500'
-        }`}></div>
+      {/* Dynamic Header / Cycle Banner using Resolved Switch Properties */}
+      <div className={`p-6 rounded-xl border relative overflow-hidden transition-colors duration-500 ${currentSpiral.bannerClass}`}>
+        
+        {/* Background glow effects configured by active mood */}
+        <div className={`absolute -top-24 -right-24 w-64 h-64 rounded-full blur-3xl opacity-20 pointer-events-none ${currentSpiral.glowClass}`}></div>
 
         <div className="relative z-10 flex flex-col md:flex-row justify-between items-start md:items-end gap-4">
           <div>
-            <h1 className="text-3xl font-bold text-white mb-1">Cetus</h1>
-            <p className="text-slate-400">Plains of Eidolon</p>
+            <h1 className="text-3xl font-bold text-white mb-1">Duviri</h1>
+            <p className="text-slate-400">The Paradox</p>
           </div>
 
           <div className="text-right">
-            <div className={`text-2xl font-bold uppercase tracking-wider mb-1 ${
-              isDay ? 'text-amber-400' : 'text-blue-400'
-            }`}>
-              {isDay ? '☀ Day' : '☾ Night'}
+            <div className={`text-2xl font-bold uppercase tracking-wider mb-1 ${currentSpiral.textClass}`}>
+              {currentSpiral.label}
             </div>
             <div className="text-slate-300">
-              Time remaining: <Countdown expiry={cetusCycle?.expiry} />
+              Time remaining: <Countdown expiry={duviriCycle?.expiry} />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Bounty Board Section */}
-      <section>
-        <div className="flex items-center justify-between mb-4">
-          <h2 className="text-xl font-bold text-slate-200">Konzu's Bounties</h2>
-          <span className="text-sm text-slate-400">Ostron Syndicate</span>
+
+
+    {/* Weekly Circuit Selections Section */}
+      <section className="space-y-6">
+        <h2 className="text-2xl font-bold text-slate-200 border-b border-slate-800 pb-2">
+          Weekly Circuit Offerings
+        </h2>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          
+          {/* Normal Circuit (Warframes) */}
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <h3 className="text-lg font-bold text-sky-400 mb-4 flex items-center gap-2">
+              🛡️ Normal Circuit <span className="text-xs text-slate-500 font-normal">(Warframe Blueprints)</span>
+            </h3>
+            
+            <div className="flex flex-wrap gap-2">
+              {
+              warframes && warframes.length > 0 ? (
+                warframes.map((frame, index) => (
+                  <div key={index} className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 font-medium shadow-sm">
+                    {frame}
+                  </div>
+                ))
+              ) : (
+                <p className="text-slate-500 italic text-sm">No Warframe selection data found.</p>
+              )}
+            </div>
+          </div>
+
+          {/* Steel Path Circuit (Incarnon Adapters) */}
+          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+            <h3 className="text-lg font-bold text-red-400 mb-4 flex items-center gap-2">
+              ⚔️ Steel Path Circuit <span className="text-xs text-slate-500 font-normal">(Incarnon Evolutions)</span>
+            </h3>
+            
+            <div className="flex flex-wrap gap-2">
+              {incarnons && incarnons.length > 0 ? (
+                incarnons.map((weapon, index) => (
+                  <div key={index} className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 font-medium shadow-sm">
+                    {weapon}
+                  </div>
+                ))
+              ) : (
+                <p className="text-slate-500 italic text-sm">No Incarnon selection data found.</p>
+              )}
+            </div>
+          </div>
+
         </div>
-
-        {bounties && bounties.length > 0 ? (
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-            {bounties.map((job, index) => {
-              // Calculate total standing for the bounty
-              const totalStanding = job.standingStages 
-                ? job.standingStages.reduce((a, b) => a + b, 0) 
-                : 0;
-
-              return (
-                <div 
-                  key={job.id || index} 
-                  className="bg-slate-900 border border-slate-700 rounded-lg p-5 hover:border-slate-500 transition-colors shadow-sm flex flex-col justify-between"
-                >
-                  <div>
-                    <h3 className="font-bold text-lg text-slate-100 leading-tight mb-2">
-                      {job.type}
-                    </h3>
-                    <div className="inline-block bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded mb-4 font-mono">
-                      Level {job.enemyLevels[0]} - {job.enemyLevels[1]}
-                    </div>
-                  </div>
-
-                  <div className="flex items-center justify-between border-t border-slate-800 pt-3 mt-2">
-                    <span className="text-slate-500 text-sm">Reward</span>
-                    <div className="flex items-center gap-1.5 bg-amber-500/10 px-2 py-1 rounded">
-                      <span className="text-amber-500 text-xs">✪</span>
-                      <span className="font-bold text-amber-400 text-sm">
-                        {totalStanding.toLocaleString()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              );
-            })}
-          </div>
-        ) : (
-          <div className="bg-slate-900 border border-slate-800 rounded-lg p-8 text-center text-slate-500">
-            No bounties currently available.
-          </div>
-        )}
       </section>
-
     </div>
-  );
+   );
+
 }
