@@ -46,6 +46,7 @@ export default function World() {
   const [loading, setLoading] = useState(true);
   const [construction, setConstruction] = useState(null);
   const [invasions, setInvasions] = useState([]);
+  const [darvoDeal, setDarvoDeal] = useState(null);
 
   useEffect(() => {
     const docRef = doc(db, 'worldState', 'latest');
@@ -63,6 +64,7 @@ export default function World() {
         setArchonHunt(data.archonHunt || null);
         setConstruction(data.constructionProgress || null);
         setInvasions(data.invasions || []);
+        setDarvoDeal(data.darvoDeal || null);
       }
       setLoading(false);
     });
@@ -145,7 +147,17 @@ export default function World() {
       </section>
 
     {/* Darvo Deal */}
-    
+    <section>
+      <h2 className="text-2xl font-bold text-green-400 mb-3">Darvo Deal</h2>
+      <div className="bg-slate-800 p-1 rounded-sm border border-slate-700 shadow-sm flex flex-col items-left justify-center text-slate-400 min-h-[70px]">
+        {darvoDeal ? (
+          <p>Check this merch out! {darvoDeal[0].item} for {darvoDeal[0].salePrice} platinum, ({darvoDeal[0].discount}% off!)</p>): 
+          (
+          <p className="text-slate-500 italic">No Darvo deal available.</p>
+        )}
+      </div>
+    </section>
+
     {/* Sortie and Archon Hunt */}
         <div>
             <h2 className="text-2xl font-bold text-green-400 mb-6">Sortie and Archon Hunt</h2>
