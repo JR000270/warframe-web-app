@@ -11,6 +11,7 @@ import Duviri from './components/Duviri';
 import Sidebar from './components/Sidebar';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
+import pageBg from './images/warframe_content_page_background.png';
 
 function App() {
   const [user, setUser] = useState(null);
@@ -41,17 +42,25 @@ function App() {
   return (
     <BrowserRouter>
       {/* We use h-screen to make the app exactly the height of the monitor, avoiding double-scrollbars */}
-      <div className="flex h-screen bg-slate-950 text-white overflow-hidden">
+      <div className={"flex h-screen  text-white overflow-hidden bg-cover bg-no-repeat bg-top"}
+      style={{ backgroundImage: `url(${pageBg})` }}>
         
         <Sidebar />
 
         {/* The main content area where pages swap in and out */}
-        <main className="flex-1 overflow-y-auto">
-          <div className="p-8">
-            <h1 className="text-4xl font-bold text-red-500 mb-8 pl-4">
-              Warframe Alert Hub
+        <main className="flex-1 flex flex-col h-full overflow-hidden">
+          
+          {/* STATIONARY TITLE BLOCK */}
+          {/* flex-shrink-0 ensures this box never squishes when the page gets full */}
+          <div className="p-15 pt-13 pb-6 flex-shrink-0">
+            <h1 className="text-4xl font-bold text-white pl-4">
+              Warframe World View
             </h1>
-            
+          </div>
+          
+          {/* SCROLLABLE PAGE CONTENT BLOCK */}
+          {/* flex-1 lets it fill the rest of the space, and overflow-y-auto makes ONLY this box scroll */}
+          <div className="flex-1 overflow-y-auto px-12 pb-12">
             <Routes>
               {/* When the URL is '/', draw Dashboard */}
               <Route path="/" element={<Dashboard />} />
@@ -65,8 +74,8 @@ function App() {
               <Route path="/cambion" element={<Cambion />} />
               <Route path="/duviri" element={<Duviri />} />
             </Routes>
-            
           </div>
+          
         </main>
 
       </div>

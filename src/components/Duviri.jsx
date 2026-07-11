@@ -49,13 +49,13 @@ export default function Duviri() {
       if (docSnap.exists()) {
         const data = docSnap.data();
         
-        // 1. Store the raw data in a local, immediate variable first
+        // Store the raw data in a local, immediate variable first
         const currentCycleData = data.duviriCycle; 
         
-        // 2. Set the React state for your banner
+        //Set the React state for your banner
         setduviriCycle(currentCycleData); 
         
-        // 3. Evaluate the LOCAL variable (currentCycleData), NOT the React state variable
+        //Evaluate the local variable (currentCycleData)
         if (currentCycleData && Array.isArray(currentCycleData.choices)) {
           // Normal Circuit choices (Index 0)
           const normalCategory = currentCycleData.choices[0];
@@ -162,7 +162,7 @@ export default function Duviri() {
 
     {/* Weekly Circuit Selections Section */}
       <section className="space-y-6">
-        <h2 className="text-2xl font-bold text-slate-200 border-b border-slate-800 pb-2">
+        <h2 className="text-2xl font-bold text-slate-200">
           Weekly Circuit Offerings
         </h2>
 
@@ -171,7 +171,7 @@ export default function Duviri() {
           {/* Normal Circuit (Warframes) */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
             <h3 className="text-lg font-bold text-sky-400 mb-4 flex items-center gap-2">
-              🛡️ Normal Circuit <span className="text-xs text-slate-500 font-normal">(Warframe Blueprints)</span>
+              Normal Circuit <span className="text-xs text-slate-500 font-normal">(Warframe Blueprints)</span>
             </h3>
             
             <div className="flex flex-wrap gap-2">
@@ -190,8 +190,8 @@ export default function Duviri() {
 
           {/* Steel Path Circuit (Incarnon Adapters) */}
           <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
-            <h3 className="text-lg font-bold text-red-400 mb-4 flex items-center gap-2">
-              ⚔️ Steel Path Circuit <span className="text-xs text-slate-500 font-normal">(Incarnon Evolutions)</span>
+            <h3 className="text-lg font-bold text-blue-400 mb-4 flex items-center gap-2">
+              Steel Path Circuit <span className="text-xs text-slate-500 font-normal">(Incarnon Evolutions)</span>
             </h3>
             
             <div className="flex flex-wrap gap-2">

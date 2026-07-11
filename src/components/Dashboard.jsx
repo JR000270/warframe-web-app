@@ -288,7 +288,7 @@ export default function Dashboard() {
                 onClick={() => setShowSteelPath(!showSteelPath)}
                 className="w-full bg-slate-800 hover:bg-slate-750 p-4 flex justify-between items-center transition-colors text-left"
               >
-                <span className="font-bold text-red-400">
+                <span className="font-bold text-blue-300">
                   Steel Path ({steelPathFissures.length})
                 </span>
                 <span className="text-slate-400 text-xs">{showSteelPath ? '▼' : '▶'}</span>
@@ -306,7 +306,7 @@ export default function Dashboard() {
                 onClick={() => setShowRailjack(!showRailjack)}
                 className="w-full bg-slate-800 hover:bg-slate-750 p-4 flex justify-between items-center transition-colors text-left"
               >
-                <span className="font-bold text-purple-400">
+                <span className="font-bold text-blue-300">
                   Railjack ({railjackFissures.length})
                 </span>
                 <span className="text-slate-400 text-xs">{showRailjack ? '▼' : '▶'}</span>

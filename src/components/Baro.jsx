@@ -74,20 +74,14 @@ export default function Baro() {
   return (
     <div className="w-full max-w-7xl p-4 space-y-8 animate-fadeIn">
       
-      {/* Return Navigation */}
-      <Link to="/" className="inline-block text-sm text-slate-400 hover:text-red-400 transition-colors">
-        ← Back to Active System Monitors
-      </Link>
-
       {/* Hero Header - Changes style based on active status */}
       <div className={`border p-6 rounded-xl flex flex-col md:flex-row justify-between items-start md:items-center gap-6 shadow-md transition-colors ${
         isBaroActive 
-          ? 'bg-gradient-to-br from-teal-950/40 via-slate-900 to-slate-900 border-teal-500/30' 
+          ? 'bg-gradient-to-br from-teal-950/40 via-blue-900 to-teal-500 border-teal-500' 
           : 'bg-slate-900 border-slate-800'
       }`}>
         <div>
           <div className="flex items-center gap-2 mb-2">
-            <span className="text-2xl">{isBaroActive ? '💎' : '🌌'}</span>
             <h2 className="text-3xl font-extrabold text-white tracking-tight">Baro Ki'Teer</h2>
           </div>
           {isBaroActive ? (
@@ -120,7 +114,7 @@ export default function Baro() {
           <h3 className="text-xl font-bold text-slate-300 mb-4 px-1">Exotic Wares ({trader.inventory?.length || 0})</h3>
           
           {!trader.inventory || trader.inventory.length === 0 ? (
-            <p className="text-slate-400 italic">Inventory list empty or out of sync.</p>
+            <p className="text-red-400 italic">Inventory list empty or out of sync.</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {trader.inventory.map((item, index) => (

@@ -76,7 +76,6 @@ export default function World() {
     if (!data || Object.keys(data).length === 0) {
       return (
         <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 shadow-sm flex flex-col items-center justify-center text-slate-500 min-h-[140px]">
-          <span className="text-2xl mb-2">📡</span>
           <p className="font-semibold">{name} Data Unavailable</p>
         </div>
       );
@@ -108,7 +107,7 @@ export default function World() {
     }
 
     return (
-      <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 shadow-sm flex flex-col justify-between min-h-[140px]">
+      <div className="bg-cyan-900/40 p-6 rounded-lg border border-cyan-500/60 shadow-[0_0_10px_rgba(34,211,238,0.3),inset_0_0_6px_rgba(34,211,238,0.15)] hover:bg-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.6)] flex flex-col justify-between min-h-[140px]">
         <div>
           <h3 className={`text-xl font-bold mb-2 ${displayColor}`}>{name}</h3>
           <p className="text-lg font-semibold text-white">{displayState}</p>
@@ -125,22 +124,22 @@ export default function World() {
   if (!cycles) return <div className="text-white p-8">No cycle data found.</div>;
 
   return (
-    <div className="w-full max-w-7xl p-4 space-y-8">
+    <div className="w-full max-w-7xl p-4 px-4 space-y-8">
         {/* Open World Cycles */}
       <section>
         <h2 className="text-2xl font-bold text-green-400 mb-6">Open World Cycles</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-          <Link to="/cetus">
-           <CycleCard name="Cetus" data={cycles.cetus} />
+          <Link to="/cetus" className="hover:scale-103 transition-transform">
+           <CycleCard name="Cetus" data={cycles.cetus}/>
           </Link>
-          <Link to="/vallis">
+          <Link to="/vallis" className="hover:scale-103 transition-transform">
             <CycleCard name="Orb Vallis" data={cycles.vallis} />
           </Link>
-          <Link to="/cambion">
+          <Link to="/cambion" className="hover:scale-103 transition-transform">
             <CycleCard name="Cambion Drift" data={cycles.cambion} />
           </Link>
-          <Link to="/duviri">
+          <Link to="/duviri" className="hover:scale-103 transition-transform">
             <CycleCard name="Duviri" data={cycles.duviri} />
           </Link>
         </div>
@@ -149,9 +148,9 @@ export default function World() {
     {/* Darvo Deal */}
     <section>
       <h2 className="text-2xl font-bold text-green-400 mb-3">Darvo Deal</h2>
-      <div className="bg-slate-800 p-1 rounded-sm border border-slate-700 shadow-sm flex flex-col items-left justify-center text-slate-400 min-h-[70px]">
+      <div className="bg-cyan-900/40 p-1 rounded-sm border border-cyan-500/60 shadow-sm flex flex-col items-left justify-center text-white min-h-[70px]">
         {darvoDeal ? (
-          <p>Check this merch out! {darvoDeal[0].item} for {darvoDeal[0].salePrice} platinum, ({darvoDeal[0].discount}% off!)</p>): 
+          <p>Hey Tenno, check this merch out! {darvoDeal[0].item} for {darvoDeal[0].salePrice} platinum, ({darvoDeal[0].discount}% off!)</p>): 
           (
           <p className="text-slate-500 italic">No Darvo deal available.</p>
         )}
@@ -165,9 +164,9 @@ export default function World() {
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         
         {/* COLUMN 1: Sortie */}
-        <div className="bg-slate-900 border border-slate-700 rounded-lg overflow-hidden flex flex-col h-full">
+        <div className="bg-cyan-500/40 border border-cyan-500/60 rounded-lg overflow-hidden flex flex-col h-full">
           {/* Header */}
-          <div className="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+          <div className="bg-cyan-800 p-4 border-b border-cyan-500/60 flex justify-between items-center">
             <div>
               <h2 className="text-xl font-bold text-yellow-500 flex items-center gap-2">
                 Sortie
@@ -206,9 +205,9 @@ export default function World() {
         </div>
 
         {/* COLUMN 2: Archon Hunt */}
-        <div className="bg-slate-900 border border-slate-700 rounded-lg overflow-hidden flex flex-col h-full">
+        <div className="bg-cyan-500/40 border border-cyan-500/60 rounded-lg overflow-hidden flex flex-col h-full">
           {/* Header */}
-          <div className="bg-slate-800 p-4 border-b border-slate-700 flex justify-between items-center">
+          <div className="bg-cyan-800 p-4 border-b border-cyan-500/60 flex justify-between items-center">
             <div>
               <h2 className="text-xl font-bold text-red-500 flex items-center gap-2">
                 Archon Hunt
@@ -248,13 +247,13 @@ export default function World() {
       </section>
 
       {/* Invasion project construction */}
-      <section className="bg-slate-900 border border-slate-700 rounded-lg p-6 shadow-sm">
+      <section className="bg-cyan-900/40 border border-cyan-500/60 rounded-lg p-6 shadow-sm">
         <h2 className="text-xl font-bold text-slate-200 mb-6 flex items-center gap-2">
           Faction Relay Attack Progress
         </h2>
 
         {!construction ? (
-          <p className="text-slate-500 italic text-center py-4">Telemetry unavailable.</p>
+          <p className="text-slate-500 italic text-center py-4">Info unavailable.</p>
         ) : (
           <div className="flex flex-col gap-2">
             
@@ -265,7 +264,7 @@ export default function World() {
                 <span className="text-lg font-mono font-bold text-green-400">{Number(construction.fomorianProgress).toFixed(2)}%</span>
               </div>
               <div className="text-right flex items-baseline gap-2 flex-row-reverse">
-                <span className="block font-bold text-blue-400 tracking-wide uppercase text-sm">Corpus Razorback Armada</span>
+                <span className="block font-bold text-blue-300 tracking-wide uppercase text-sm">Corpus Razorback Armada</span>
                 <span className="text-lg font-mono font-bold text-blue-300">{Number(construction.razorbackProgress).toFixed(2)}%</span>
               </div>
             </div>
@@ -274,7 +273,7 @@ export default function World() {
             <div className="flex w-full h-8 bg-slate-950 rounded border border-slate-800 overflow-hidden shadow-inner">
               
               {/* Grineer Left Half (Fills Left to Right) */}
-              <div className="w-1/2 h-full bg-green-900/20 relative border-r border-slate-800/50">
+              <div className="w-1/2 h-full bg-green-900/40 relative border-r border-slate-800/60">
                 <div 
                   className="absolute top-0 left-0 h-full bg-green-600 shadow-[0_0_15px_rgba(22,163,74,0.4)] transition-all duration-1000"
                   style={{ width: `${construction.fomorianProgress}%` }}
@@ -321,8 +320,28 @@ export default function World() {
               const attackerReward = getRewardText(inv.attacker);
               const defenderReward = getRewardText(inv.defender);
 
+              // Determine faction colors based on the invasion description
+              const descLower = inv.desc.toLowerCase();
+              let attackerBarColor = 'bg-red-600/80'; // Default attacker (Infested)
+              let defenderBgColor = 'bg-blue-900/40'; // Default background
+              
+              let attackerTextColor = 'text-red-400';
+              let defenderTextColor = 'text-blue-400';
+
+              if (descLower.includes('grineer')) {
+                attackerBarColor = 'bg-green-600/80';
+                defenderBgColor = 'bg-blue-900/40';
+                attackerTextColor = 'text-green-400';
+                defenderTextColor = 'text-blue-400';
+              } else if (descLower.includes('corpus')) {
+                attackerBarColor = 'bg-blue-600/80';
+                defenderBgColor = 'bg-green-900/40';
+                attackerTextColor = 'text-blue-400';
+                defenderTextColor = 'text-green-400';
+              }
+
               return (
-                <div key={index} className="bg-slate-900 border border-slate-700 rounded-lg p-4 shadow-sm flex flex-col justify-between h-full">
+                <div key={index} className="bg-cyan-900/40 border border-cyan-500/60 rounded-lg p-4 shadow-sm flex flex-col justify-between h-full">
                   
                   {/* Top: Node & Description */}
                   <div className="mb-4">
@@ -335,18 +354,18 @@ export default function World() {
                     {/* Attacker Reward (Left Side) */}
                     <div className="text-left w-1/2 pr-2">
                       {attackerReward ? (
-                        <span className="text-red-400 block truncate" title={attackerReward}>
+                        <span className={`${attackerTextColor} block truncate`} title={attackerReward}>
                           {attackerReward}
                         </span>
                       ) : (
-                        <span className="text-slate-600 italic">No Reward</span>
+                        <span className="text-slate-600 italic"></span>
                       )}
                     </div>
 
                     {/* Defender Reward (Right Side) */}
                     <div className="text-right w-1/2 pl-2 border-l border-slate-800">
                       {defenderReward ? (
-                        <span className="text-blue-400 block truncate" title={defenderReward}>
+                        <span className={`${defenderTextColor} block truncate`} title={defenderReward}>
                           {defenderReward}
                         </span>
                       ) : (
@@ -356,24 +375,17 @@ export default function World() {
                   </div>
 
                   {/* Bottom: The Tug-of-War Progress Bar */}
-                  <div className="w-full h-3 bg-blue-900/40 rounded overflow-hidden relative border border-slate-800">
+                  <div className={`w-full h-3 rounded overflow-hidden relative border border-slate-800 ${defenderBgColor}`}>
                     
-                    {/* 
-                      This is the Attacker's fill bar. 
-                      Because it is pinned to the left, and its width is dynamic, 
-                      it visually "pushes" against the blue background!
-                    */}
+                    {/* Attacker's fill bar with dynamic color */}
                     <div 
-                      className="h-full bg-red-600/80 transition-all duration-1000"
+                      className={`h-full transition-all duration-1000 ${attackerBarColor}`}
                       style={{ width: `${attackerWidth}%` }}
                     ></div>
-
-                    {/* Optional: A tiny center line to show the 50% mark visually */}
-                    <div className="absolute top-0 left-1/2 w-px h-full bg-slate-400/50 -ml-px z-10"></div>
                   </div>
                   
                   {/* Percentage Readout */}
-                  <div className="flex justify-between mt-1 text-[10px] text-slate-500 font-mono">
+                  <div className="flex justify-between mt-1 text-[10px] text-white font-mono">
                     <span>{attackerWidth.toFixed(1) > 100 ? '100.0' : attackerWidth.toFixed(1)}%</span>
                     <span>{inv.completion.toFixed(1) < 0 ? '0.0' : inv.completion.toFixed(1)}%</span>
                   </div>
