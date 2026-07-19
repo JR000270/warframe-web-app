@@ -127,7 +127,7 @@ export default function World() {
     <div className="w-full max-w-7xl p-4 px-4 space-y-8">
         {/* Open World Cycles */}
       <section>
-        <h2 className="text-2xl font-bold text-green-400 mb-6">Open World Cycles</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Open World Cycles</h2>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
           <Link to="/cetus" className="hover:scale-103 transition-transform">
@@ -147,7 +147,7 @@ export default function World() {
 
     {/* Darvo Deal */}
     <section>
-      <h2 className="text-2xl font-bold text-green-400 mb-3">Darvo Deal</h2>
+      <h2 className="text-2xl font-bold text-white mb-3">Darvo Deal</h2>
       <div className="bg-cyan-900/40 p-1 rounded-sm border border-cyan-500/60 shadow-sm flex flex-col items-left justify-center text-white min-h-[70px]">
         {darvoDeal ? (
           <p>Hey Tenno, check this merch out! {darvoDeal[0].item} for {darvoDeal[0].salePrice} platinum, ({darvoDeal[0].discount}% off!)</p>): 
@@ -159,7 +159,7 @@ export default function World() {
 
     {/* Sortie and Archon Hunt */}
         <div>
-            <h2 className="text-2xl font-bold text-green-400 mb-6">Sortie and Archon Hunt</h2>
+            <h2 className="text-2xl font-bold text-white mb-6">Sortie and Archon Hunt</h2>
         </div>
       <section className="grid grid-cols-1 md:grid-cols-2 gap-6 items-start">
         
@@ -248,7 +248,7 @@ export default function World() {
 
       {/* Invasion project construction */}
       <section className="bg-cyan-900/40 border border-cyan-500/60 rounded-lg p-6 shadow-sm">
-        <h2 className="text-xl font-bold text-slate-200 mb-6 flex items-center gap-2">
+        <h2 className="text-xl font-bold text-white mb-6 flex items-center gap-2">
           Faction Relay Attack Progress
         </h2>
 
@@ -295,7 +295,7 @@ export default function World() {
 
         {/* Invasion Battles */}
       <section>
-        <h2 className="text-2xl font-bold text-orange-400 mb-6 mt-8 flex items-center gap-2">
+        <h2 className="text-2xl font-bold text-white mb-6 mt-8 flex items-center gap-2">
           Active Invasions
         </h2>
 

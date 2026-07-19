@@ -169,16 +169,16 @@ export default function Duviri() {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           
           {/* Normal Circuit (Warframes) */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <div className="bg-cyan-900/40 border border-cyan-400 rounded-xl p-5">
             <h3 className="text-lg font-bold text-sky-400 mb-4 flex items-center gap-2">
-              Normal Circuit <span className="text-xs text-slate-500 font-normal">(Warframe Blueprints)</span>
+              Normal Circuit <span className="text-xs text-white font-normal">(Warframe Blueprints)</span>
             </h3>
             
             <div className="flex flex-wrap gap-2">
               {
               warframes && warframes.length > 0 ? (
                 warframes.map((frame, index) => (
-                  <div key={index} className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 font-medium shadow-sm">
+                  <div key={index} className="bg-cyan-800 border border-cyan-400 rounded-lg px-4 py-2.5 text-slate-200 font-medium shadow-sm">
                     {frame}
                   </div>
                 ))
@@ -189,15 +189,15 @@ export default function Duviri() {
           </div>
 
           {/* Steel Path Circuit (Incarnon Adapters) */}
-          <div className="bg-slate-900 border border-slate-800 rounded-xl p-5">
+          <div className="bg-cyan-900/40 border border-cyan-400 rounded-xl p-5">
             <h3 className="text-lg font-bold text-blue-400 mb-4 flex items-center gap-2">
-              Steel Path Circuit <span className="text-xs text-slate-500 font-normal">(Incarnon Evolutions)</span>
+              Steel Path Circuit <span className="text-xs text-white font-normal">(Incarnon Evolutions)</span>
             </h3>
             
             <div className="flex flex-wrap gap-2">
               {incarnons && incarnons.length > 0 ? (
                 incarnons.map((weapon, index) => (
-                  <div key={index} className="bg-slate-800 border border-slate-700 rounded-lg px-4 py-2.5 text-slate-200 font-medium shadow-sm">
+                  <div key={index} className="bg-cyan-800 border border-cyan-400 rounded-lg px-4 py-2.5 text-slate-200 font-medium shadow-sm">
                     {weapon}
                   </div>
                 ))

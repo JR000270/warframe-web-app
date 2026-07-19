@@ -9,6 +9,7 @@ import Vallis from './components/Vallis';
 import Cambion from './components/Cambion';
 import Duviri from './components/Duviri';
 import Sidebar from './components/Sidebar';
+import Support from './components/Support';
 import { auth } from './firebase';
 import { onAuthStateChanged } from 'firebase/auth';
 import pageBg from './images/warframe_content_page_background.png';
@@ -36,7 +37,7 @@ function App() {
         <Login />
       </div>
     );
-  }
+  } 
 
   // If logged in, show the full application layout!
   return (
@@ -53,18 +54,18 @@ function App() {
           {/* STATIONARY TITLE BLOCK */}
           {/* flex-shrink-0 ensures this box never squishes when the page gets full */}
           <div className="p-15 pt-13 pb-6 flex-shrink-0">
-            <h1 className="text-4xl font-bold text-white pl-4">
-              Warframe World View
+            <h1 className="text-4xl font-display font-bold text-white pl-4">
+              Warframe World View Here
             </h1>
           </div>
           
-          {/* SCROLLABLE PAGE CONTENT BLOCK */}
+          {/* scrollable page content */}
           {/* flex-1 lets it fill the rest of the space, and overflow-y-auto makes ONLY this box scroll */}
-          <div className="flex-1 overflow-y-auto px-12 pb-12">
+          <div className="flex-1 overflow-y-auto px-15 pb-12">
             <Routes>
               {/* When the URL is '/', draw Dashboard */}
-              <Route path="/" element={<Dashboard />} />
-              <Route path="/world" element={<World />} />
+              <Route path="/dashboard" element={<Dashboard />} />
+              <Route path="/" element={<World />} />
 
               <Route path="/baro" element={<Baro />} />
               
@@ -73,9 +74,13 @@ function App() {
               <Route path="/vallis" element={<Vallis />} />
               <Route path="/cambion" element={<Cambion />} />
               <Route path="/duviri" element={<Duviri />} />
+
+              <Route path="/support" element={<Support />} />
             </Routes>
           </div>
           
+          {/* empty div to keep scrollable content in aesthetic alignment */}
+          <div className="p-2"></div>
         </main>
 
       </div>
