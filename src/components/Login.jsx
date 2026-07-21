@@ -33,13 +33,13 @@ export default function Login() {
 
   //UI html
   return (
-    <div className="w-full max-w-md p-8 space-y-6 bg-slate-800 rounded-xl border border-slate-700 shadow-lg mt-10">
-      <h2 className="text-2xl font-bold text-center text-red-500">
-        {isLogin ? 'Log In to Alerts' : 'Create an Account'}
+    <div className="w-full max-w-md p-8 space-y-6 bg-cyan-900/20 rounded-xl border border-cyan-700 shadow-lg mt-10">
+      <h2 className="text-2xl font-bold text-center text-cyan-400">
+        {isLogin ? 'Log In' : 'Create an Account'}
       </h2>
 
       {/* If there's an error, show a red alert box */}
-      {error && <div className="p-3 text-sm text-red-400 bg-red-900/30 rounded border border-red-800">{error}</div>}
+      {error && <div className="p-3 text-sm text-cyan-400 bg-cyan-900/30 rounded border border-cyan-800">{error}</div>}
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
@@ -49,7 +49,7 @@ export default function Login() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)} // Update state on every keystroke
-            className="w-full px-4 py-2 mt-1 text-white bg-slate-900 border border-slate-600 rounded focus:border-red-500 focus:outline-none"
+            className="w-full px-4 py-2 mt-1 text-white bg-slate-900 border border-slate-600 rounded focus:border-cyan-500 focus:outline-none"
           />
         </div>
 
@@ -60,13 +60,13 @@ export default function Login() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 mt-1 text-white bg-slate-900 border border-slate-600 rounded focus:border-red-500 focus:outline-none"
+            className="w-full px-4 py-2 mt-1 text-white bg-slate-900 border border-slate-600 rounded focus:border-cyan-500 focus:outline-none"
           />
         </div>
 
         <button 
           type="submit" 
-          className="w-full py-2 font-bold text-white bg-red-600 rounded hover:bg-red-700 transition-colors"
+          className="w-full py-2 font-bold text-white bg-cyan-600 rounded hover:bg-cyan-700 transition-colors"
         >
           {isLogin ? 'Log In' : 'Sign Up'}
         </button>
@@ -77,7 +77,7 @@ export default function Login() {
         {isLogin ? "Don't have an account? " : "Already have an account? "}
         <button 
           onClick={() => setIsLogin(!isLogin)} 
-          className="text-red-400 hover:text-red-300 underline"
+          className="text-cyan-400 hover:text-cyan-300 underline"
         >
           {isLogin ? 'Sign up' : 'Log in'}
         </button>

@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
-// --- NEW COUNTDOWN COMPONENT ---
 const Countdown = ({ expiry }) => {
   const [timeLeft, setTimeLeft] = useState('');
 
@@ -15,10 +14,18 @@ const Countdown = ({ expiry }) => {
         return "Expired";
       }
       
-      const h = Math.floor(difference / (1000 * 60 * 60));
+      // 1. Calculate Days (divide by 24 hours)
+      const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+      
+      // 2. Calculate Hours (modulo 24 hours to get the remainder)
+      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      
+      // 3. Minutes and Seconds stay exactly the same
       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const s = Math.floor((difference % (1000 * 60)) / 1000);
       
+      // 4. Update the return strings to conditionally show days if there are any
+      if (d > 0) return `${d}d ${h}h ${m}m ${s}s`;
       if (h > 0) return `${h}h ${m}m ${s}s`;
       return `${m}m ${s}s`;
     };
@@ -35,22 +42,22 @@ const Countdown = ({ expiry }) => {
   }, [expiry]);
 
   return (
-    <span className={`font-mono text-xs font-semibold ${timeLeft === 'Expired' ? 'text-red-500' : 'text-slate-400'}`}>
+    <span className={`font-mono text-xs font-semibold ${timeLeft === 'Expired' ? 'text-red-500' : 'text-white'}`}>
       {timeLeft === 'Expired' ? 'Expired' : `⏱ ${timeLeft}`}
     </span>
   );
 };
 
 export default function Dashboard() {
-  // 1. DATA STATE
+  // Data constants
+  const [events, setEvents] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [fissures, setFissures] = useState([]);
-  const [arbitration, setArbitration] = useState(null);
-  const [voidTrader, setVoidTrader] = useState(null); // <-- Added Baro State
+  const [voidTrader, setVoidTrader] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 2. UI TOGGLE STATE
-  const [showNormal, setShowNormal] = useState(true);
+  // UI states
+  const [showNormal, setShowNormal] = useState(false);
   const [showSteelPath, setShowSteelPath] = useState(false);
   const [showRailjack, setShowRailjack] = useState(false);
 
@@ -60,10 +67,10 @@ export default function Dashboard() {
     const unsubscribe = onSnapshot(documentReference, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.data();
+        setEvents(data.events || []);
         setAlerts(data.alerts || []); 
         setFissures(data.fissures || []); 
-        setArbitration(data.arbitration || null);
-        setVoidTrader(data.voidTrader || null); // <-- Syncing Baro Data
+        setVoidTrader(data.voidTrader || null);
       }
       setLoading(false);
     });
@@ -71,16 +78,10 @@ export default function Dashboard() {
     return () => unsubscribe();
   }, []);
 
-  const hasArbitration = 
-    arbitration && 
-    Object.keys(arbitration).length > 0 && 
-    !arbitration.expired &&
-    arbitration.node !== "SolNode000";
-
   // Calculate if Baro is active based on his activation timestamp
   const isBaroActive = voidTrader && new Date(voidTrader.activation).getTime() <= Date.now();
   
-  // --- SORTING LOGIC ---
+  // Sorting logic for fissure missions
   const tierWeights = {
     'Lith': 1, 'Meso': 2, 'Neo': 3, 'Axi': 4, 'Omnia': 5, 'Requiem': 6
   };
@@ -96,7 +97,7 @@ export default function Dashboard() {
   const railjackFissures = fissures.filter(f => f.isStorm).sort(sortFissuresByTier);
 
 
-  // --- STYLING LOGIC ---
+  // styling for fissure types
   const getTierBadge = (tier) => {
     let styles = "";
     switch(tier) {
@@ -129,7 +130,7 @@ export default function Dashboard() {
   };
 
 
-  // --- UI RENDER HELPER ---
+  // makes the tiles for fissures
   const renderFissureCards = (fissureList) => {
     if (fissureList.length === 0) {
       return <p className="text-slate-400 py-4 text-center">No active fissures.</p>;
@@ -138,7 +139,7 @@ export default function Dashboard() {
     return (
       <div className="flex flex-col gap-3">
         {fissureList.map((fissure) => (
-          <div key={fissure.id} className="bg-slate-800 p-3 rounded border border-slate-700 shadow-sm flex flex-col justify-between">
+          <div key={fissure.id} className="bg-teal-400/20 p-3 rounded shadow-sm flex flex-col justify-between">
             <div>
               <div className="flex justify-between items-start mb-1 gap-2">
                 <div className="flex flex-col">
@@ -158,16 +159,44 @@ export default function Dashboard() {
   return (
     <div className="w-full max-w-7xl p-4 space-y-12">
       
-      {/* --- ALERTS SECTION --- */}
+      {/* --- EVENTS SECTION --- */}
       <section>
-        <h2 className="text-2xl font-bold text-red-500 mb-6">Active Alerts</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Events</h2>
+      {/* event card layout*/}
+        {loading ? (
+          <p className="text-slate-400">Loading...</p>
+        ) : events.length === 0 ? (
+          <p className="text-white">No active events.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {events.map((event) => {
+              
+              return (
+                <div key={event.id} className="bg-cyan-400/20 p-4 rounded-lg shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-1 gap-2">
+                      <div className="flex flex-col">
+                        <h3 className="font-semibold text-white leading-tight">{event.node}</h3>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-300 mt-1">
+                      {event.description} - {event.tooltip}
+                    </p>
+                  </div>         
+              </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
 
-        {/* --- BARO KI'TEER INTERACTIVE BANNER LOCATION --- */}
+
+      {/* --- BARO KI'TEER INTERACTIVE BANNER LOCATION --- */}
         {voidTrader && (
           isBaroActive ? (
             <Link 
               to="/baro" 
-              className="block mb-6 p-5 rounded-lg border bg-teal-900/20 border-teal-700/40 hover:border-teal-500/80 shadow-[0_0_15px_rgba(20,184,166,0.1)] hover:shadow-[0_0_20px_rgba(20,184,166,0.25)] transition-all cursor-pointer group"
+              className="block mb-6 p-5 rounded-lg border bg-teal-400/20 border-teal-700/40 hover:border-teal-500/80 shadow-[0_0_15px_rgba(20,184,166,0.1)] hover:shadow-[0_0_20px_rgba(20,184,166,0.25)] transition-all cursor-pointer group"
             >
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
@@ -179,7 +208,7 @@ export default function Dashboard() {
                   </p>
                 </div>
                 
-                <div className="text-left md:text-right bg-slate-900/60 p-3 rounded border border-slate-700/50 w-full md:w-auto">
+                <div className="text-left md:text-right bg-cyan-900/40 p-3 rounded  w-full md:w-auto">
                   <p className="text-xs text-slate-400 mb-1 uppercase tracking-wider font-semibold">
                     Departs in:
                   </p>
@@ -190,14 +219,14 @@ export default function Dashboard() {
               </div>
             </Link>
           ) : (
-            <div className="mb-6 p-5 rounded-lg border bg-slate-800 border-slate-700 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
+            <div className="mb-6 p-5 rounded-lg border bg-teal-400/20 border-teal-700/40 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
                 <h3 className="font-bold text-slate-400 text-xl flex items-center gap-2 mb-1">
                   🌌 Baro Ki'Teer
                 </h3>
                 <p className="text-slate-400">Traveling through the Void...</p>
               </div>
-              <div className="text-left md:text-right bg-slate-900/50 p-3 rounded border border-slate-700/50 w-full md:w-auto">
+              <div className="text-left md:text-right bg-cyan-900/40 p-3 rounded w-full md:w-auto">
                 <p className="text-xs text-slate-400 mb-1 uppercase tracking-wider font-semibold">Arrives in:</p>
                 <div className="text-lg text-white">
                   <Countdown expiry={voidTrader.activation} />
@@ -207,57 +236,75 @@ export default function Dashboard() {
           )
         )}
 
-        {/* --- CARDS LAYOUT DOWN BELOW --- */}
+      {/* --- ALERTS SECTION --- */}
+      <section>
+        <h2 className="text-2xl font-bold text-white mb-6">Alerts</h2>
+
+        
+
+        {/* alert card layout*/}
         {loading ? (
           <p className="text-slate-400">Loading...</p>
-        ) : alerts.length === 0 && !hasArbitration ? (
-          <p className="text-slate-400">No active alerts at the moment.</p>
+        ) : alerts.length === 0 ? (
+          <p className="text-white">No active alerts at the moment.</p>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-            
-            {/* 1. ARBITRATION CARD */}
-            {hasArbitration && (
-              <div className="bg-slate-800 p-4 rounded-lg border border-slate-400 shadow-[0_0_8px_rgba(203,213,225,0.15)]">
-                <div className="flex justify-between items-start mb-1 gap-2">
-                  <div className="flex flex-col">
-                    <h3 className="font-semibold text-white leading-tight">{arbitration.node}</h3>
-                    <Countdown expiry={arbitration.expiry} />
-                  </div>
-                  <span className="text-[10px] uppercase font-bold px-2 py-1 rounded border tracking-wider bg-slate-300/20 text-slate-300 border-slate-400/50">
-                    Arbitration
-                  </span>
-                </div>
-                <p className="text-sm text-slate-300 mt-1">{arbitration.type} - {arbitration.enemy}</p>
-                <p className="text-sm font-bold text-slate-300 mt-2">
-                  Reward: Vitus Essence
-                </p>
-              </div>
-            )}
+            {alerts.map((alert) => {
+              
+              // 1. Safely drill down to the reward map
+              const reward = alert.mission?.reward;
+              const rewardList = [];
 
-            {/* 2. STANDARD ALERTS */}
-            {alerts.map((alert) => (
-              <div key={alert.id} className="bg-slate-800 p-4 rounded-lg border border-slate-700 shadow-sm flex flex-col justify-between">
-                <div>
-                  <div className="flex justify-between items-start mb-1 gap-2">
-                    <div className="flex flex-col">
-                      <h3 className="font-semibold text-white leading-tight">{alert.mission.node}</h3>
-                      <Countdown expiry={alert.expiry} />
+              if (reward) {
+                // 2. Handle plain strings array (e.g. Alert 0: Orokin Reactor Blueprint)
+                if (Array.isArray(reward.items)) {
+                  rewardList.push(...reward.items);
+                }
+
+                // 3. Handle the array of maps safely (e.g. Alert 1: Tauforged Shards)
+                if (Array.isArray(reward.countedItems)) {
+                  const formattedCounted = reward.countedItems.map((item) => {
+                    if (!item) return null;
+                    // If count is greater than 1, add the multiplier prefix (e.g., "3x Fieldron")
+                    return item.count > 1 ? `${item.count}x ${item.type}` : item.type;
+                  }).filter(Boolean); // Removes any accidental null/undefined items
+                  
+                  rewardList.push(...formattedCounted);
+                }
+              }
+
+              return (
+                <div key={alert.id} className="bg-cyan-400/20 p-4 rounded-lg shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-1 gap-2">
+                      <div className="flex flex-col">
+                        <h3 className="font-semibold text-white leading-tight">{alert.mission?.node}</h3>
+                        <Countdown expiry={alert.expiry}/>
+                      </div>
                     </div>
+                    <p className="text-sm text-slate-300 mt-1">
+                      {alert.mission?.type} - {alert.mission?.faction}
+                    </p>
                   </div>
-                  <p className="text-sm text-slate-300 mt-1">{alert.mission.type} - {alert.mission.faction}</p>
-                </div>
-                <p className="text-sm font-bold text-accent mt-3">
-                  Reward: {alert.mission.reward.asString}
-                </p>
+                  
+                  <p className="text-sm font-bold text-accent mt-3">
+                    {/* 4. Join our completely clean array of strings, fallback to credits if empty */}
+                    Reward: {rewardList.length > 0 
+                      ? rewardList.join(', ') 
+                      : `${reward?.credits || 0} Credits`}
+                  </p>
               </div>
-            ))}
+              );
+            })}
           </div>
         )}
       </section>
 
+      
+
       {/* --- FISSURES SECTION --- */}
       <section>
-        <h2 className="text-2xl font-bold text-blue-400 mb-6">Active Fissures</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Void Fissures</h2>
         
         {loading ? (
           <p className="text-slate-400">Loading...</p>
@@ -265,10 +312,10 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
             
             {/* NORMAL COLUMN */}
-            <div className="border border-slate-700 rounded-lg overflow-hidden bg-slate-900">
+            <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowNormal(!showNormal)}
-                className="w-full bg-slate-800 hover:bg-slate-750 p-4 flex justify-between items-center transition-colors text-left"
+                className="w-full p-4 flex justify-between items-center transition-colors text-left cursor-pointer"
               >
                 <span className="font-bold text-blue-300">
                   Normal ({normalFissures.length})
@@ -276,43 +323,43 @@ export default function Dashboard() {
                 <span className="text-slate-400 text-xs">{showNormal ? '▼' : '▶'}</span>
               </button>
               {showNormal && (
-                <div className="p-3 border-t border-slate-700">
+                <div className="p-3">
                   {renderFissureCards(normalFissures)}
                 </div>
               )}
             </div>
 
             {/* STEEL PATH COLUMN */}
-            <div className="border border-slate-700 rounded-lg overflow-hidden bg-slate-900">
+            <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowSteelPath(!showSteelPath)}
-                className="w-full bg-slate-800 hover:bg-slate-750 p-4 flex justify-between items-center transition-colors text-left"
+                className="w-full p-4 flex justify-between items-center transition-colors text-left cursor-pointer"
               >
-                <span className="font-bold text-red-400">
+                <span className="font-bold text-blue-300">
                   Steel Path ({steelPathFissures.length})
                 </span>
                 <span className="text-slate-400 text-xs">{showSteelPath ? '▼' : '▶'}</span>
               </button>
               {showSteelPath && (
-                <div className="p-3 border-t border-slate-700">
+                <div className="p-3">
                   {renderFissureCards(steelPathFissures)}
                 </div>
               )}
             </div>
 
             {/* RAILJACK COLUMN */}
-            <div className="border border-slate-700 rounded-lg overflow-hidden bg-slate-900">
+            <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowRailjack(!showRailjack)}
-                className="w-full bg-slate-800 hover:bg-slate-750 p-4 flex justify-between items-center transition-colors text-left"
+                className="w-full p-4 flex justify-between items-center transition-colors text-left cursor-pointer"
               >
-                <span className="font-bold text-purple-400">
+                <span className="font-bold text-blue-300">
                   Railjack ({railjackFissures.length})
                 </span>
                 <span className="text-slate-400 text-xs">{showRailjack ? '▼' : '▶'}</span>
               </button>
               {showRailjack && (
-                <div className="p-3 border-t border-slate-700">
+                <div className="p-3">
                   {renderFissureCards(railjackFissures)}
                 </div>
               )}

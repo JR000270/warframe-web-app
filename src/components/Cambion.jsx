@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
+import BountyModal from './BountyModal';
 
 // The ticking timer component
 const Countdown = ({ expiry }) => {
@@ -40,9 +41,15 @@ export default function Deimos() {
   //Entrati Family
   const [cambionCycle, setCambionCycle] = useState(null);
   const [entrati_bounties, setBounties] = useState(null);
+  const [selectedBounty, setSelectedBounty] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [loading, setLoading] = useState(true);
 
+  const openBountyModal = (bounty) => {
+    setSelectedBounty(bounty);
+    setIsModalOpen(true);
+  }
   useEffect(() => {
     const docRef = doc(db, 'worldState', 'latest');
     
@@ -127,29 +134,26 @@ export default function Deimos() {
                 : 0;
 
               return (
-                <div 
-                  key={job.id || index} 
-                  className="bg-slate-900 border border-slate-700 rounded-lg p-5 hover:border-slate-500 transition-colors shadow-sm flex flex-col justify-between"
-                >
+                 <button onClick={() => openBountyModal(job)} className= "cursor-pointer bg-cyan-900/40 border border-cyan-400 rounded-lg p-5 hover:border-cyan-300 hover:bg-cyan-500/40 hover:scale-103 transition-transform shadow-sm flex flex-col justify-between">
                   <div>
                     <h3 className="font-bold text-lg text-slate-100 leading-tight mb-2">
                       {job.type}
                     </h3>
-                    <div className="inline-block bg-slate-800 text-slate-300 text-xs px-2 py-1 rounded mb-4 font-mono">
+                    <div className="inline-block bg-cyan-800 text-cyan-300 text-xs px-2 py-1 rounded mb-4 font-mono">
                       Level {job.enemyLevels[0]} - {job.enemyLevels[1]}
                     </div>
                   </div>
 
-                  <div className="flex items-center justify-between border-t border-slate-800 pt-3 mt-2">
-                    <span className="text-slate-500 text-sm">Reward</span>
+                  <div className="flex items-center justify-between pt-3 mt-2">
+                    <span className="text-white text-sm">Reward</span>
                     <div className="flex items-center gap-1.5 bg-amber-500/10 px-2 py-1 rounded">
                       <span className="text-amber-500 text-xs">✪</span>
                       <span className="font-bold text-amber-400 text-sm">
-                        {totalStanding.toLocaleString()}
+                        {totalStanding.toLocaleString()} mother tokens
                       </span>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -159,7 +163,11 @@ export default function Deimos() {
           </div>
         )}
       </section>
-
+      <BountyModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        job={selectedBounty} 
+      />
     </div>
   );
 }
