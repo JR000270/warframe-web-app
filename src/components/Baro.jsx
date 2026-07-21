@@ -13,10 +13,12 @@ const Countdown = ({ targetTime, completeText }) => {
       const difference = new Date(targetTime).getTime() - Date.now();
       if (difference <= 0) return completeText;
       
-      const h = Math.floor(difference / (1000 * 60 * 60));
+      const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const s = Math.floor((difference % (1000 * 60)) / 1000);
       
+      if (d > 0) return `${d}d ${h}h ${m}m ${s}s`;
       if (h > 0) return `${h}h ${m}m ${s}s`;
       return `${m}m ${s}s`;
     };

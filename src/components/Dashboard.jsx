@@ -3,7 +3,6 @@ import { Link } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
-// --- NEW COUNTDOWN COMPONENT ---
 const Countdown = ({ expiry }) => {
   const [timeLeft, setTimeLeft] = useState('');
 
@@ -15,10 +14,18 @@ const Countdown = ({ expiry }) => {
         return "Expired";
       }
       
-      const h = Math.floor(difference / (1000 * 60 * 60));
+      // 1. Calculate Days (divide by 24 hours)
+      const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+      
+      // 2. Calculate Hours (modulo 24 hours to get the remainder)
+      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      
+      // 3. Minutes and Seconds stay exactly the same
       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const s = Math.floor((difference % (1000 * 60)) / 1000);
       
+      // 4. Update the return strings to conditionally show days if there are any
+      if (d > 0) return `${d}d ${h}h ${m}m ${s}s`;
       if (h > 0) return `${h}h ${m}m ${s}s`;
       return `${m}m ${s}s`;
     };
@@ -184,13 +191,7 @@ export default function Dashboard() {
       </section>
 
 
-
-
-      {/* --- ALERTS SECTION --- */}
-      <section>
-        <h2 className="text-2xl font-bold text-white mb-6">Alerts</h2>
-
-        {/* --- BARO KI'TEER INTERACTIVE BANNER LOCATION --- */}
+      {/* --- BARO KI'TEER INTERACTIVE BANNER LOCATION --- */}
         {voidTrader && (
           isBaroActive ? (
             <Link 
@@ -234,6 +235,12 @@ export default function Dashboard() {
             </div>
           )
         )}
+
+      {/* --- ALERTS SECTION --- */}
+      <section>
+        <h2 className="text-2xl font-bold text-white mb-6">Alerts</h2>
+
+        
 
         {/* alert card layout*/}
         {loading ? (
@@ -305,7 +312,7 @@ export default function Dashboard() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
             
             {/* NORMAL COLUMN */}
-            <div className="bg-cyan-900/40 border border-cyan-400 rounded-lg overflow-hidden">
+            <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowNormal(!showNormal)}
                 className="w-full p-4 flex justify-between items-center transition-colors text-left cursor-pointer"
@@ -323,7 +330,7 @@ export default function Dashboard() {
             </div>
 
             {/* STEEL PATH COLUMN */}
-            <div className="bg-cyan-900/40 border border-cyan-400 rounded-lg overflow-hidden">
+            <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowSteelPath(!showSteelPath)}
                 className="w-full p-4 flex justify-between items-center transition-colors text-left cursor-pointer"
@@ -341,7 +348,7 @@ export default function Dashboard() {
             </div>
 
             {/* RAILJACK COLUMN */}
-            <div className="bg-cyan-900/40 border border-cyan-400 rounded-lg overflow-hidden">
+            <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowRailjack(!showRailjack)}
                 className="w-full p-4 flex justify-between items-center transition-colors text-left cursor-pointer"
