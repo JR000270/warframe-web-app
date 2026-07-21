@@ -3,26 +3,33 @@ import { Link } from 'react-router-dom';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
 
-// 1. We bring in the live Countdown component!
 const Countdown = ({ expiry }) => {
   const [timeLeft, setTimeLeft] = useState('');
 
   useEffect(() => {
-    if (!expiry) return;
-    
     const calculateTime = () => {
       const difference = new Date(expiry).getTime() - Date.now();
       
-      if (difference <= 0) return "Expired";
+      if (difference <= 0) {
+        return "Expired";
+      }
       
-      const h = Math.floor(difference / (1000 * 60 * 60));
+      // 1. Calculate Days (divide by 24 hours)
+      const d = Math.floor(difference / (1000 * 60 * 60 * 24));
+      
+      // 2. Calculate Hours (modulo 24 hours to get the remainder)
+      const h = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      
+      // 3. Minutes and Seconds stay exactly the same
       const m = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
       const s = Math.floor((difference % (1000 * 60)) / 1000);
       
+      // 4. Update the return strings to conditionally show days if there are any
+      if (d > 0) return `${d}d ${h}h ${m}m ${s}s`;
       if (h > 0) return `${h}h ${m}m ${s}s`;
       return `${m}m ${s}s`;
     };
-
+    
     setTimeLeft(calculateTime());
 
     const timer = setInterval(() => {
