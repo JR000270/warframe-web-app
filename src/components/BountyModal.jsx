@@ -1,5 +1,6 @@
 export default function BountyModal({ isOpen, onClose, job }) {
   // If the modal isn't open, or there is no job data, render nothing
+  // note for future me: modals are like pop up menus that overlay the current page
   if (!isOpen || !job) return null;
 
   // Rarity color mapping for a cool UI touch

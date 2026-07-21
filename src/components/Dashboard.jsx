@@ -42,15 +42,15 @@ const Countdown = ({ expiry }) => {
 };
 
 export default function Dashboard() {
-  // 1. DATA STATE
+  // Data constants
+  const [events, setEvents] = useState([]);
   const [alerts, setAlerts] = useState([]);
   const [fissures, setFissures] = useState([]);
-  const [arbitration, setArbitration] = useState(null);
-  const [voidTrader, setVoidTrader] = useState(null); // <-- Added Baro State
+  const [voidTrader, setVoidTrader] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // 2. UI TOGGLE STATE
-  const [showNormal, setShowNormal] = useState(true);
+  // UI states
+  const [showNormal, setShowNormal] = useState(false);
   const [showSteelPath, setShowSteelPath] = useState(false);
   const [showRailjack, setShowRailjack] = useState(false);
 
@@ -60,10 +60,10 @@ export default function Dashboard() {
     const unsubscribe = onSnapshot(documentReference, (snapshot) => {
       if (snapshot.exists()) {
         const data = snapshot.data();
+        setEvents(data.events || []);
         setAlerts(data.alerts || []); 
         setFissures(data.fissures || []); 
-        setArbitration(data.arbitration || null);
-        setVoidTrader(data.voidTrader || null); // <-- Syncing Baro Data
+        setVoidTrader(data.voidTrader || null);
       }
       setLoading(false);
     });
@@ -71,16 +71,10 @@ export default function Dashboard() {
     return () => unsubscribe();
   }, []);
 
-  const hasArbitration = 
-    arbitration && 
-    Object.keys(arbitration).length > 0 && 
-    !arbitration.expired &&
-    arbitration.node !== "SolNode000";
-
   // Calculate if Baro is active based on his activation timestamp
   const isBaroActive = voidTrader && new Date(voidTrader.activation).getTime() <= Date.now();
   
-  // --- SORTING LOGIC ---
+  // Sorting logic for fissure missions
   const tierWeights = {
     'Lith': 1, 'Meso': 2, 'Neo': 3, 'Axi': 4, 'Omnia': 5, 'Requiem': 6
   };
@@ -96,7 +90,7 @@ export default function Dashboard() {
   const railjackFissures = fissures.filter(f => f.isStorm).sort(sortFissuresByTier);
 
 
-  // --- STYLING LOGIC ---
+  // styling for fissure types
   const getTierBadge = (tier) => {
     let styles = "";
     switch(tier) {
@@ -129,7 +123,7 @@ export default function Dashboard() {
   };
 
 
-  // --- UI RENDER HELPER ---
+  // makes the tiles for fissures
   const renderFissureCards = (fissureList) => {
     if (fissureList.length === 0) {
       return <p className="text-slate-400 py-4 text-center">No active fissures.</p>;
@@ -158,8 +152,43 @@ export default function Dashboard() {
   return (
     <div className="w-full max-w-7xl p-4 space-y-12">
       
+      {/* --- EVENTS SECTION --- */}
       <section>
-        <h2 className="text-2xl font-bold text-white mb-6">Active Alerts</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Events</h2>
+      {/* event card layout*/}
+        {loading ? (
+          <p className="text-slate-400">Loading...</p>
+        ) : events.length === 0 ? (
+          <p className="text-white">No active events.</p>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {events.map((event) => {
+              
+              return (
+                <div key={event.id} className="bg-cyan-400/20 p-4 rounded-lg shadow-sm flex flex-col justify-between">
+                  <div>
+                    <div className="flex justify-between items-start mb-1 gap-2">
+                      <div className="flex flex-col">
+                        <h3 className="font-semibold text-white leading-tight">{event.node}</h3>
+                      </div>
+                    </div>
+                    <p className="text-sm text-slate-300 mt-1">
+                      {event.description} - {event.tooltip}
+                    </p>
+                  </div>         
+              </div>
+              );
+            })}
+          </div>
+        )}
+      </section>
+
+
+
+
+      {/* --- ALERTS SECTION --- */}
+      <section>
+        <h2 className="text-2xl font-bold text-white mb-6">Alerts</h2>
 
         {/* --- BARO KI'TEER INTERACTIVE BANNER LOCATION --- */}
         {voidTrader && (
@@ -264,9 +293,11 @@ export default function Dashboard() {
         )}
       </section>
 
+      
+
       {/* --- FISSURES SECTION --- */}
       <section>
-        <h2 className="text-2xl font-bold text-white mb-6">Active Fissures</h2>
+        <h2 className="text-2xl font-bold text-white mb-6">Void Fissures</h2>
         
         {loading ? (
           <p className="text-slate-400">Loading...</p>
