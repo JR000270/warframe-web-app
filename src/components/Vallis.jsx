@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { doc, onSnapshot } from 'firebase/firestore';
 import { db } from '../firebase';
+import BountyModal from './BountyModal';
 
 // The ticking timer component
 const Countdown = ({ expiry }) => {
@@ -40,6 +41,14 @@ export default function Vallis() {
   const [vallisCycle, setVallisCycle] = useState(null);
   const [bounties, setBounties] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [selectedBounty, setSelectedBounty] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  //open a bounty
+  const openBountyModal = (bounty) => {
+    setSelectedBounty(bounty);
+    setIsModalOpen(true);
+  }
 
   useEffect(() => {
     const docRef = doc(db, 'worldState', 'latest');
@@ -125,10 +134,7 @@ export default function Vallis() {
                 : 0;
 
               return (
-                <div 
-                  key={job.id || index} 
-                  className="bg-cyan-900/40 border border-cyan-400 rounded-lg p-5 hover:border-cyan-300 transition-colors shadow-sm flex flex-col justify-between"
-                >
+                 <button onClick={() => openBountyModal(job)} className= "cursor-pointer bg-cyan-900/40 border border-cyan-400 rounded-lg p-5 hover:border-cyan-300 hover:bg-cyan-500/40 hover:scale-103 transition-transform shadow-sm flex flex-col justify-between">
                   <div>
                     <h3 className="font-bold text-lg text-slate-100 leading-tight mb-2">
                       {job.type}
@@ -147,7 +153,7 @@ export default function Vallis() {
                       </span>
                     </div>
                   </div>
-                </div>
+                </button>
               );
             })}
           </div>
@@ -157,7 +163,11 @@ export default function Vallis() {
           </div>
         )}
       </section>
-
+      <BountyModal 
+        isOpen={isModalOpen} 
+        onClose={() => setIsModalOpen(false)} 
+        job={selectedBounty} 
+      />
     </div>
   );
 }

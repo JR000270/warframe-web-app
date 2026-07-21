@@ -51,23 +51,13 @@ export default function Sidebar() {
           );
         })}
       </nav>
-      {/* Logout Button at the bottom
-      <div className="p-4 ">
-        <button 
-          onClick={() => signOut(auth)}
-          className="w-full flex items-center justify-center gap-2 p-2 text-sm 'text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3),inset_0_0_6px_rgba(34,211,238,0.15)] 
-          hover:text-red-400 hover:bg-red-950/30 hover:border-red-500/80 hover:shadow-[0_0_15px_rgba(34,211,238,0.6)]'"
-        >
-          <span>Log Out</span>
-        </button>
-      </div> */}
       <div className="p-4 ">
         <button 
           onClick={() => window.location.href = '/support'}
           className="w-full flex items-center justify-center gap-2 p-2 text-sm 'text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3),inset_0_0_6px_rgba(34,211,238,0.15)] 
           hover: hover:bg-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.6)]'"
         >
-          <span>Support</span>
+          <span>Reach Out</span>
         </button>
         </div>
       

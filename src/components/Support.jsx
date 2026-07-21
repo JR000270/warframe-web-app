@@ -2,7 +2,6 @@ import { useState } from 'react';
 
 export default function Support() {
   const [formData, setFormData] = useState({
-    name: '',
     email: '',
     subject: '',
     message: ''
@@ -31,7 +30,7 @@ export default function Support() {
           Accept: 'application/json'
         },
         body: JSON.stringify({
-          access_key: 'YOUR_ACCESS_KEY_HERE', // Replace with your key
+          access_key: '09885e2a-4432-4e29-9331-e882ba7972e2', // Replace with your key
           ...formData
         })
       });
@@ -40,7 +39,7 @@ export default function Support() {
 
       if (result.success) {
         setStatus('success');
-        setFormData({ name: '', email: '', subject: '', message: '' }); // Clear form
+        setFormData({email: '', subject: '', message: '' }); // Clear form
       } else {
         setStatus('error');
       }
@@ -57,7 +56,7 @@ export default function Support() {
         <div>
           <h2 className="text-3xl font-extrabold text-white tracking-tight mb-2">Transmissions</h2>
           <p className="text-slate-300">
-            Encountered a bug or have a feature request? Send a secure message to me!
+            Encountered a bug or have a feature request? Send a message over!
           </p>
         </div>
         <div className="text-4xl opacity-50">📡</div>
@@ -69,7 +68,7 @@ export default function Support() {
           <div className="flex flex-col items-center justify-center py-12 text-center">
             <span className="text-5xl mb-4">✅</span>
             <h3 className="text-2xl font-bold text-teal-400 mb-2">Transmission Sent</h3>
-            <p className="text-slate-300">Thank you for your feedback. The message has been securely routed.</p>
+            <p className="text-slate-300">Thank you for your feedback Tenno.</p>
             <button 
               onClick={() => setStatus('idle')}
               className="mt-6 px-6 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-lg transition-colors border border-slate-600"
@@ -81,23 +80,6 @@ export default function Support() {
           <form onSubmit={handleSubmit} className="space-y-4">
             
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {/* Name Field */}
-              <div className="flex flex-col gap-1">
-                <label htmlFor="name" className="text-sm font-bold text-teal-400 uppercase tracking-wider">
-                  Operator Name
-                </label>
-                <input
-                  type="text"
-                  id="name"
-                  name="name"
-                  required
-                  value={formData.name}
-                  onChange={handleChange}
-                  placeholder="e.g. Ordis"
-                  className="px-4 py-2 w-full bg-cyan-950/20 border border-cyan-500/40 rounded-lg text-white placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:shadow-[0_0_10px_rgba(34,211,238,0.3)] transition-all duration-300 backdrop-blur-[2px]"
-                />
-              </div>
-
               {/* Email Field */}
               <div className="flex flex-col gap-1">
                 <label htmlFor="email" className="text-sm font-bold text-teal-400 uppercase tracking-wider">
