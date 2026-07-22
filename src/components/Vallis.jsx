@@ -37,6 +37,70 @@ const Countdown = ({ expiry }) => {
   return <span className="font-mono tracking-widest">{timeLeft}</span>;
 };
 
+  const PROFIT_TAKER_HEISTS = 
+  [
+    {
+      id: "profit_taker_phase_1",
+      type: "Profit Taker: Phase 1",
+      enemyLevels: [40, 60],
+      standingStages: [1000],
+      description: "Acquire satellite protocols.",
+      rewardPoolDrops: [
+        { item: "Gyromag Systems", count: 5, chance: 28.57, rarity: "Common" },
+        { item: "Atmo Systems", count: 5, chance: 14.29, rarity: "Uncommon" },
+        { item: "Repeller Systems", count: 3, chance: 7.14, rarity: "Rare" }
+      ]
+    },
+    {
+      id: "profit_taker_phase_2",
+      type: "Profit Taker: Phase 2",
+      enemyLevels: [40, 60],
+      standingStages: [1000],
+      description: "Get Profit Takers harmonic schema.",
+      rewardPoolDrops: [
+        { item: "Gyromag Systems", count: 5, chance: 28.57, rarity: "Common" },
+        { item: "Atmo Systems", count: 5, chance: 14.29, rarity: "Uncommon" },
+        { item: "Repeller Systems", count: 3, chance: 7.14, rarity: "Rare" }
+      ]
+    },
+    {
+      id: "profit_taker_phase_3",
+      type: "Profit Taker: Phase 3",
+      enemyLevels: [40, 60],
+      standingStages: [1000],
+      description: "Steal gravimag.",
+      rewardPoolDrops: [
+        { item: "Gyromag Systems", count: 5, chance: 28.57, rarity: "Common" },
+        { item: "Atmo Systems", count: 5, chance: 14.29, rarity: "Uncommon" },
+        { item: "Repeller Systems", count: 3, chance: 7.14, rarity: "Rare" }
+      ]
+    },
+    {
+      id: "profit_taker_phase_4",
+      type: "Profit Taker: Phase 4",
+      enemyLevels: [50, 60],
+      standingStages: [1000],
+      description: "Destroy the Profit Taker.",
+      rewardPoolDrops: [
+        { item: "Crisma Toroid", count: 1, chance: 100.0, rarity: "Common" },
+        { item: "Profit-Taker Articula", count: 1, chance: 5.0, rarity: "Rare" }
+      ]
+    },
+    {
+    id: "exploiter_deck_12",
+    type: "Exploiter Orb Deck 12",
+    enemyLevels: [40, 60],
+    standingStages: [1000],
+    description: "Destroy the Exploiter Orb at Deck 12.",
+    rewardPoolDrops: [
+      { item: "Lazulite Toroid", count: 1, chance: 100.0, rarity: "Common" },,
+      { item: "Exploiter Articula", count: 1, chance: 5.0, rarity: "Rare" }
+    ]
+    }
+  ];
+
+
+
 export default function Vallis() {
   const [vallisCycle, setVallisCycle] = useState(null);
   const [bounties, setBounties] = useState(null);
@@ -147,9 +211,8 @@ export default function Vallis() {
                   <div className="flex items-center justify-between pt-3 mt-2">
                     <span className="text-cyan-300 text-sm">Reputation</span>
                     <div className="flex items-center gap-1.5 bg-amber-500/10 px-2 py-1 rounded">
-                      <span className="text-amber-500 text-xs">✪</span>
                       <span className="font-bold text-amber-400 text-sm">
-                        {totalStanding.toLocaleString()}
+                        +{totalStanding.toLocaleString()}
                       </span>
                     </div>
                   </div>
@@ -162,6 +225,57 @@ export default function Vallis() {
             No bounties currently available.
           </div>
         )}
+      </section>
+
+      <section className="mt-10">
+        <div className="flex items-center justify-between mb-4">
+          <div>
+            <h2 className="text-xl font-bold text-yellow-400">Solaris United Heists</h2>
+          </div>
+          <span className="text-xs bg-yellow-500/10 text-yellow-400 px-2 py-1 rounded border border-yellow-500/30">
+            Old Mate Required
+          </span>
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {PROFIT_TAKER_HEISTS.map((heist) => {
+            const totalStanding = heist.standingStages 
+              ? heist.standingStages.reduce((a, b) => a + b, 0) 
+              : 0;
+
+            return (
+              <button
+                key={heist.id}
+                onClick={() => openBountyModal(heist)}
+                className="bg-slate-900/80 border border-yellow-500/30 rounded-lg p-5 hover:border-yellow-400 hover:bg-yellow-950/20 transition-all text-left flex flex-col justify-between group shadow-lg"
+              >
+                <div>
+                  <div className="flex justify-between items-start mb-2">
+                    <h3 className="font-bold text-lg text-slate-100 group-hover:text-yellow-300 transition-colors">
+                      {heist.type}
+                    </h3>
+                    <span className="bg-yellow-500/20 text-yellow-300 text-xs px-2 py-0.5 rounded font-mono border border-yellow-500/40">
+                      Lvl {heist.enemyLevels[0]}-{heist.enemyLevels[1]}
+                    </span>
+                  </div>
+                  
+                  <p className="text-xs text-slate-400 mb-4 line-clamp-2">
+                    {heist.description}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between pt-3 border-t border-slate-800">
+                  <span className="text-xs text-slate-400">Reputation</span>
+                  <div className="flex items-center gap-1 bg-yellow-500/10 px-2 py-1 rounded">
+                    <span className="font-bold text-yellow-300 text-xs">
+                      +{totalStanding.toLocaleString()}
+                    </span>
+                  </div>
+                </div>
+              </button>
+            );
+          })}
+        </div>
       </section>
       <BountyModal 
         isOpen={isModalOpen} 

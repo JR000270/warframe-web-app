@@ -53,7 +53,7 @@ function App() {
           
           {/* STATIONARY TITLE BLOCK */}
           {/* flex-shrink-0 ensures this box never squishes when the page gets full */}
-          <div className="p-15 pt-13 pb-6 flex-shrink-0">
+          <div className="p-15 pt-13 pb-6 shrink-0">
             <h1 className="text-4xl font-display font-bold text-white pl-4">
               Warframe World View
             </h1>

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import HCaptcha from '@hcaptcha/react-hcaptcha';
 
 export default function Support() {
   const [formData, setFormData] = useState({
@@ -16,6 +17,8 @@ export default function Support() {
     }));
   };
 
+  const [captchaToken, setCaptchaToken] = useState(null);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setStatus('submitting');
@@ -31,7 +34,8 @@ export default function Support() {
         },
         body: JSON.stringify({
           access_key: '09885e2a-4432-4e29-9331-e882ba7972e2', // Replace with your key
-          ...formData
+          ...formData,
+          'hcaptcha_token-response': captchaToken
         })
       });
 
@@ -40,6 +44,7 @@ export default function Support() {
       if (result.success) {
         setStatus('success');
         setFormData({email: '', subject: '', message: '' }); // Clear form
+        setCaptchaToken(null); // Reset captcha
       } else {
         setStatus('error');
       }
@@ -132,6 +137,14 @@ export default function Support() {
               ></textarea>
             </div>
 
+            {/* HCaptcha */}
+            <div className="pt-2">
+              <HCaptcha
+                sitekey="50b2fe65-b00b-4b9e-ad62-3ba471098be2"
+                onVerify={(token) => setCaptchaToken(token)}
+                theme="dark" // Matches your high-tech aesthetic!
+              />
+            </div>
             {/* Error Message Display */}
             {status === 'error' && (
               <p className="text-red-400 text-sm font-bold bg-red-900/20 p-2 rounded border border-red-500/50">

@@ -37,6 +37,24 @@ const Countdown = ({ expiry }) => {
   return <span className="font-mono tracking-widest">{timeLeft}</span>;
 };
 
+// Static data for Night Cycle Eidolon Hunts
+const EIDOLON_BOUNTIES = [
+  {
+    id: "eidolon_teralyst",
+    type: "Eidolon Hunt: Teralyst",
+    enemyLevels: [20, 40],
+    standingStages: [1000], 
+    rewardPoolDrops: []
+  },
+  {
+    id: "eidolon_tridolon",
+    type: "Eidolon Cull: Teralyst, Gantulyst, and Hydrolyst",
+    enemyLevels: [20, 40],
+    standingStages: [5000],
+    rewardPoolDrops: []
+  }
+];
+
 export default function Cetus() {
   const [cetusCycle, setCetusCycle] = useState(null);
   const [bounties, setBounties] = useState(null);
@@ -163,6 +181,50 @@ export default function Cetus() {
           </div>
         )}
       </section>
+
+      {/*Eidolon Hunts Section */}
+      {!isDay && (
+        <section className="mt-8 animate-fadeIn">
+          <div className="flex items-center justify-between mb-4">
+            <h2 className="text-xl font-bold text-blue-300">Sentient Remnants</h2>
+            <span className="text-sm text-blue-300">The Quills</span>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+            {EIDOLON_BOUNTIES.map((job) => {
+              const totalStanding = job.standingStages 
+                ? job.standingStages.reduce((a, b) => a + b, 0) 
+                : 0;
+
+              return (
+                <button 
+                  key={job.id}
+                  onClick={() => openBountyModal(job)} 
+                  className="bg-blue-900/20 border border-blue-500/50 rounded-lg p-5 hover:blue-purple-400 hover:bg-blue-900/40 transition-colors shadow-sm flex flex-col justify-between text-left"
+                >
+                  <div>
+                    <h3 className="font-bold text-lg text-slate-100 leading-tight mb-2">
+                      {job.type}
+                    </h3>
+                    <div className="inline-block bg-blue-900/80 text-blue-300 text-xs px-2 py-1 rounded mb-4 font-mono border border-blue-500/30">
+                      Level {job.enemyLevels[0]} - {job.enemyLevels[1]}
+                    </div>
+                  </div>
+
+                  <div className="flex items-center justify-between pt-3 mt-2 border-t border-blue-500/20">
+                    <span className="text-slate-300 text-sm">Ostron Standing</span>
+                    <div className="flex items-center gap-1.5 bg-blue-500/10 px-2 py-1 rounded">
+                      <span className="font-bold text-blue-300 text-sm">
+                        {totalStanding.toLocaleString()}
+                      </span>
+                    </div>
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+        </section>
+      )}
     <BountyModal 
       isOpen={isModalOpen} 
       onClose={() => setIsModalOpen(false)} 

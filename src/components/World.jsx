@@ -82,7 +82,7 @@ export default function World() {
     // 3. Fallback UI: If a cycle is missing (like Vallis), show this instead of vanishing
     if (!data || Object.keys(data).length === 0) {
       return (
-        <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 shadow-sm flex flex-col items-center justify-center text-slate-500 min-h-[140px]">
+        <div className="bg-slate-800 p-6 rounded-lg border border-slate-700 shadow-sm flex flex-col items-center justify-center text-slate-500 min-h-35">
           <p className="font-semibold">{name} Data Unavailable</p>
         </div>
       );
@@ -114,7 +114,7 @@ export default function World() {
     }
 
     return (
-      <div className="bg-cyan-900/40 p-6 rounded-lg border border-cyan-500/60 shadow-[0_0_10px_rgba(34,211,238,0.3),inset_0_0_6px_rgba(34,211,238,0.15)] hover:bg-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.6)] flex flex-col justify-between min-h-[140px]">
+      <div className="bg-cyan-900/40 p-6 rounded-lg border border-cyan-500/60 shadow-[0_0_10px_rgba(34,211,238,0.3),inset_0_0_6px_rgba(34,211,238,0.15)] hover:bg-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.6)] flex flex-col justify-between min-h-35">
         <div>
           <h3 className={`text-xl font-bold mb-2 ${displayColor}`}>{name}</h3>
           <p className="text-lg font-semibold text-white">{displayState}</p>
@@ -155,7 +155,7 @@ export default function World() {
     {/* Darvo Deal */}
     <section>
       <h2 className="text-2xl font-bold text-white mb-3">Darvo Deal</h2>
-      <div className="bg-cyan-900/40 p-1 rounded-sm border border-cyan-500/60 shadow-sm flex flex-col items-left justify-center text-white min-h-[70px]">
+      <div className="bg-cyan-900/40 p-1 rounded-sm border border-cyan-500/60 shadow-sm flex flex-col items-left justify-center text-white min-h-17.5">
         {darvoDeal ? (
           <p>Hey Tenno, check this merch out! {darvoDeal[0].item} for {darvoDeal[0].salePrice} platinum, ({darvoDeal[0].discount}% off!)</p>): 
           (
