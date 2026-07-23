@@ -3,6 +3,7 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
+import { initializeAppCheck, ReCaptchaV3Provider } from 'firebase/app-check';
 //the web app's Firebase configuration
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
 const firebaseConfig = {
@@ -20,7 +21,18 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const analytics = getAnalytics(app);
 
+// Enable debug token during local development so localhost isn't blocked
+if (process.env.NODE_ENV === 'development') {
+  self.FIREBASE_APPCHECK_DEBUG_TOKEN = true;
+}
+
+const appCheck = initializeAppCheck(app, {
+  provider: new ReCaptchaV3Provider('6Lcpe2AtAAAAAFmjap8zMpzHyCOWIyLWpuH1KU4g'),
+  isTokenAutoRefreshEnabled: true // Automatically refreshes App Check tokens
+});
+
 // This creates the 'db' variable and makes it available to Dashboard.jsx
 export const db = getFirestore(app);
 // user authentication
 export const auth = getAuth(app);
+

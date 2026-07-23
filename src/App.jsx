@@ -30,16 +30,6 @@ function App() {
     return <div className="min-h-screen bg-slate-950 flex items-center justify-center text-white">Loading...</div>;
   }
 
-  // If NOT logged in, just show the login screen (no sidebar)
-  if (!user) {
-    return (
-      <div className="flex min-h-screen items-center justify-center bg-slate-950 text-white p-4">
-        <Login />
-      </div>
-    );
-  } 
-
-  // If logged in, show the full application layout!
   return (
     <BrowserRouter>
       {/* We use h-screen to make the app exactly the height of the monitor, avoiding double-scrollbars */}
@@ -76,6 +66,7 @@ function App() {
               <Route path="/duviri" element={<Duviri />} />
 
               <Route path="/support" element={<Support />} />
+              <Route path="/login" element={<Login />} />
             </Routes>
           </div>
           
