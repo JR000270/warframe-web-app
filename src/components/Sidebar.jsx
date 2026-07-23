@@ -46,7 +46,7 @@ export default function Sidebar() {
           Menu
         </span>
 
-        {/* Reach Out Button */}
+        {/* Feedback Button */}
         <Link 
           to="/support"
           className={`py-1 px-2.5 text-xl font-semibold whitespace-nowrap border rounded-sm transition-all duration-300 backdrop-blur-[2px]
@@ -55,7 +55,7 @@ export default function Sidebar() {
               : 'text-cyan-400 border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3)] hover:bg-cyan-500/40 hover:border-cyan-400 hover:shadow-[0_0_15px_rgba(34,211,238,0.6)]'
             }`}
         >
-          Reach Out
+          Feedback
         </Link>
       </div>
 
