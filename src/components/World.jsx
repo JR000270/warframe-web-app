@@ -265,15 +265,20 @@ export default function World() {
           <div className="flex flex-col gap-2">
             
             {/* Top Labels & Percentages */}
-            <div className="flex justify-between items-end px-1">
-              <div className="text-left flex items-baseline gap-2">
-                <span className="block font-bold text-green-500 tracking-wide uppercase text-sm">Grineer Fomorian</span>
-                <span className="text-lg font-mono font-bold text-green-400">{Number(construction.fomorianProgress).toFixed(2)}%</span>
+            <div className="flex justify-between items-start px-1 gap-2">
+              
+              {/* Grineer Fomorian (Left) */}
+              <div className="text-left flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
+                <span className="block font-bold text-green-500 tracking-wide uppercase text-xs sm:text-sm">Grineer Fomorian</span>
+                <span className="text-base sm:text-lg font-mono font-bold text-green-400">{Number(construction.fomorianProgress).toFixed(2)}%</span>
               </div>
-              <div className="text-right flex items-baseline gap-2 flex-row-reverse">
-                <span className="block font-bold text-blue-300 tracking-wide uppercase text-sm">Corpus Razorback Armada</span>
-                <span className="text-lg font-mono font-bold text-blue-300">{Number(construction.razorbackProgress).toFixed(2)}%</span>
+
+              {/* Corpus Razorback Armada (Right) */}
+              <div className="text-right flex flex-col sm:flex-row sm:items-baseline gap-0.5 sm:gap-2">
+                <span className="block font-bold text-blue-300 tracking-wide uppercase text-xs sm:text-sm">Corpus Razorback Armada</span>
+                <span className="text-base sm:text-lg font-mono font-bold text-blue-300">{Number(construction.razorbackProgress).toFixed(2)}%</span>
               </div>
+
             </div>
 
             {/* The Dual Progress Bar */}

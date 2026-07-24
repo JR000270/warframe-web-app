@@ -39,7 +39,7 @@ export default function Login() {
 
   return (
     
-      <div className=" px-20 pt-5 space-y-5 bg-cyan-900/20 rounded-xl border border-cyan-700 shadow-lg mt-30 mx-70">
+      <div className="w-full max-w-md mx-auto mt-12 sm:mt-20 px-6 sm:px-8 py-8 space-y-5 bg-cyan-900/20 rounded-xl border border-cyan-700 shadow-lg">
         <h2 className="text-2xl font-bold text-center text-cyan-400">
           {isLogin ? 'Log In' : 'Create an Account'}
         </h2>
