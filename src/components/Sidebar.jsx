@@ -82,12 +82,24 @@ export default function Sidebar({ onCloseMobile }) {
         })}
       </nav>
 
+      {/*Buy me platinum(a coffee) button*/}
+      <div className="p-2 lg:p-7 mt-2 lg:mt-0">
+        <a
+          href="https://buymeacoffee.com/jaden_dev"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="w-full flex items-center justify-center p-2 px-6 pt-2 text-xs lg:text-sm text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3)] hover:bg-red-500/30 hover:border-red-400 hover:text-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.7)] transition-all rounded-sm text-center cursor-pointer"
+        >
+          <span>Buy Me Platinum (a Coffee)</span>
+        </a>
+      </div>
+
       {/* Dynamic Sign In / Sign Out Button */}
       <div className="p-2 lg:p-4 mt-2 lg:mt-0">
         {user ? (
           <button 
             onClick={handleSignOut}
-            className="w-full flex items-center justify-center gap-2 p-2 text-xs lg:text-sm text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3)] hover:bg-red-500/30 hover:border-red-400 hover:text-red-500 transition-all rounded-sm cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 p-2 text-xs lg:text-sm text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3)] hover:bg-red-500/30 hover:border-red-400 hover:text-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.7)] transition-all rounded-sm cursor-pointer"
           >
             <span>Sign Out</span>
           </button>
@@ -95,7 +107,7 @@ export default function Sidebar({ onCloseMobile }) {
           <Link 
             to="/login"
             onClick={onCloseMobile}
-            className="w-full flex items-center justify-center gap-2 p-2 text-xs lg:text-sm text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3)] hover:bg-red-500/30 hover:border-red-400 transition-all rounded-sm text-center cursor-pointer"
+            className="w-full flex items-center justify-center gap-2 p-2 text-xs lg:text-sm text-cyan-400 border border-cyan-500/40 bg-cyan-950/20 shadow-[0_0_10px_rgba(34,211,238,0.3)] hover:bg-red-500/30 hover:border-red-400 hover:text-red-500 hover:shadow-[0_0_20px_rgba(239,68,68,0.7)] transition-all rounded-sm text-center cursor-pointer"
           >
             <span>Sign In</span>
           </Link>
