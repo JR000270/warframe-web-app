@@ -77,7 +77,7 @@ function AppContent() {
         </div>
         
         {/* Scrollable page content */}
-        <div className="flex-1 overflow-y-auto px-4 lg:px-15 py-6 lg:pb-12">
+        <div className="flex-1 overflow-y-auto no-scrollbar px-4 lg:px-15 py-6 lg:pb-12">
           <Routes>
             <Route path="/dashboard" element={<Dashboard />} />
             <Route path="/" element={<World />} />

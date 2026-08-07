@@ -62,7 +62,7 @@ export default function Sidebar({ onCloseMobile }) {
       </div>
 
       {/* Navigation Links: 2 columns on mobile, vertical stack on laptop */}
-      <nav className="flex-1 grid grid-cols-2 lg:flex lg:flex-col gap-2.5 px-2 pt-3 lg:pt-9 lg:space-y-3">
+      <nav className="flex-1 grid grid-cols-2 lg:flex lg:flex-col gap-2 px-2 pt-3 lg:pt-9 lg:space-y-3">
         {navItems.map((item) => {
           const isActive = location.pathname === item.path;
           return (

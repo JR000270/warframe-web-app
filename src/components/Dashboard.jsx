@@ -201,7 +201,7 @@ export default function Dashboard() {
               <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                 <div>
                   <h3 className="font-bold text-teal-400 text-xl flex items-center gap-2 mb-1 group-hover:text-teal-300">
-                    💎 Baro Ki'Teer Arrived!
+                    Baro Ki'Teer Arrived!
                   </h3>
                   <p className="text-slate-300">
                     Currently at <span className="font-bold text-white group-hover:underline">{voidTrader.location}</span>. Click to view current inventory ledger.
@@ -222,7 +222,7 @@ export default function Dashboard() {
             <div className="mb-6 p-5 rounded-lg border bg-teal-400/20 border-teal-700/40 flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
               <div>
                 <h3 className="font-bold text-slate-400 text-xl flex items-center gap-2 mb-1">
-                  🌌 Baro Ki'Teer
+                  Baro Ki'Teer
                 </h3>
                 <p className="text-slate-400">Traveling through the Void...</p>
               </div>
