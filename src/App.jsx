@@ -37,7 +37,7 @@ function AppContent() {
       style={{ backgroundImage: `url(${pageBg})` }}
     >
       
-      {/* 1. MOBILE TOP BAR (Only visible on phones/tablets, hidden on laptop 'lg:') */}
+      {/* 1. mobile top bar (Only visible on phones/tablets, hidden on laptop 'lg:') */}
       <div className="lg:hidden flex items-center justify-between p-3.5 bg-slate-950/80 border-b border-cyan-500/30 backdrop-blur-md shrink-0 z-20">
         <button 
           onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -58,7 +58,7 @@ function AppContent() {
         </Link>
       </div>
 
-      {/* 2. SIDEBAR 
+      {/* 2. sidebar 
           - On Mobile: Toggles between hidden and stacked display based on state.
           - On Laptop (lg:): Permanently visible flex block side-by-side.
       */}
@@ -66,7 +66,7 @@ function AppContent() {
         <Sidebar onCloseMobile={() => setIsMobileMenuOpen(false)} />
       </div>
 
-      {/* 3. MAIN CONTENT AREA */}
+   
       <main className="flex-1 flex flex-col h-full min-w-0 overflow-hidden">
         
         {/* Desktop Title block (Hidden on mobile since mobile top bar handles branding) */}
@@ -90,8 +90,8 @@ function AppContent() {
             <Route path="/login" element={<Login />} />
           </Routes>
         </div>
-        {/* empty footer for aesthetic  */}
-        <div className="p-5"></div>
+        {/* empty footer for the inner screen aesthetic  */}
+        <div className="p-6"></div>
         
       </main>
     </div>

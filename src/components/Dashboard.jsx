@@ -311,7 +311,7 @@ export default function Dashboard() {
           ) : (
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-start">
             
-            {/* NORMAL COLUMN */}
+            {/* --NORMAL COLUMN-- */}
             <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowNormal(!showNormal)}
@@ -329,7 +329,7 @@ export default function Dashboard() {
               )}
             </div>
 
-            {/* STEEL PATH COLUMN */}
+            {/* --STEEL PATH COLUMN-- */}
             <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowSteelPath(!showSteelPath)}
@@ -347,7 +347,7 @@ export default function Dashboard() {
               )}
             </div>
 
-            {/* RAILJACK COLUMN */}
+            {/* --RAILJACK COLUMN-- */}
             <div className="bg-cyan-900/40 border border-cyan-400 hover:bg-cyan-800/40 rounded-lg overflow-hidden">
               <button 
                 onClick={() => setShowRailjack(!showRailjack)}
